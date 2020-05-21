@@ -1,0 +1,11 @@
+rootProject.name = 'MrDraper'
+include ':react-native-splash-screen'
+project(':react-native-splash-screen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-splash-screen/android')
+include ':react-native-touch-id'
+project(':react-native-touch-id').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-touch-id/android')
+include ':react-native-vector-icons'
+project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+include ':@logisticinfotech_react-native-payfort-sdk', ':FORTSDKv1.5'
+project(':@logisticinfotech_react-native-payfort-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/@logisticinfotech/react-native-payfort-sdk/android')
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'

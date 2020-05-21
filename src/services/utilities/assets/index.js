@@ -1,0 +1,42 @@
+//Images paths
+export const appImages = {
+    // applogo: require('../../../assets/icons/logo.png'),
+    loginBackground: require('../../../assets/images/bg-img.png'),
+    emailVerificationBackground: require('../../../assets/images/bg-emailVerification.png'),
+    onBoardingImg1: require('../../../assets/images/onBoardingImg1.png'),
+    onBoardingImg2: require('../../../assets/images/onBoardingImg2.png'),
+    onBoardingImg3: require('../../../assets/images/onBoardingImg3.png'),
+    onBoardingImg4: require('../../../assets/images/onBoardingImg4.png'),
+    itemReceived1: require('../../../assets/images/itemReceived1.jpg'),
+    itemReceived2: require('../../../assets/images/itemReceived2.jpg'),
+    itemReceived3: require('../../../assets/images/itemReceived3.jpg'),
+    brandSelection: require('../../../assets/icons/brand-selection.png'),
+    noteHeaderImage: require('../../../assets/images/noteHeaderImage.jpg'),
+    readBlog: require('../../../assets/images/readBlog.png'),
+    referFriendBlock: require('../../../assets/images/referFriendBlock.png'),
+    takeprofileblock: require('../../../assets/images/takeprofileblocks.png'),
+    contactStylistBlock: require('../../../assets/images/contactStylistBlock.png'),
+    surpriseMe: require('../../../assets/images/picking_clothes.jpg'),
+    dateNightsurpriseMe: require('../../../assets/images/image-container.jpg'),
+    beachHolidaysurpriseMe: require('../../../assets/images/image-container-beach.jpg'),
+    cityBreaksurpriseMe: require('../../../assets/images/image-container-city.jpg'),
+    weddingsurpriseMe: require('../../../assets/images/image-container-wedding.jpg'),
+    trendyStyleMe: require('../../../assets/images/image-container-trendy.jpg'),
+    smartCasualStyleMe: require('../../../assets/images/image-container-smart-casual.jpg'),
+    likedItem1: require('../../../assets/images/image-container-liked1.jpg'),
+    myPreferences: require('../../../assets/images/my-preferences-image.jpg'),
+    myStyles: require('../../../assets/images/my-styles-image.jpg'),
+    mySizes: require('../../../assets/images/my-sizes-image.jpg'),
+    casualStyle: require('../../../assets/images/casualStyle.png'),
+    formalStyle: require('../../../assets/images/formalStyle.png'),
+    fullOutFitts: require('../../../assets/images/fullOutFitts.png'),
+    imageconta: require('../../../assets/images/image-conta.png'),
+    pickupItem: require('../../../assets/images/image-container-pickup.jpg'),
+    facerecognition: require('../../../assets/images/face-recognition.png'),
+    camera: require('../../../assets/icons/camera.png'),
+}
+//Svgs paths
+export const appSvgs = {
+    // selectedCard: require('../../../assets/svgs/card-selection.svg'),
+    // packages: require('../../../assets/svgs/packages.svg')
+}

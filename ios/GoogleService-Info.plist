@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>712169822703-c2vq1ipb6fp6alqp4hc01dj3t221jmg1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.712169822703-c2vq1ipb6fp6alqp4hc01dj3t221jmg1</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCKld8wCtH1KK5uV6D3MBX0svvY9Dt6Sa0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>712169822703</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mrdraper</string>
+	<key>PROJECT_ID</key>
+	<string>mrdraper-mobile-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mrdraper-mobile-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:712169822703:ios:eb1238acfb0180abeffe1a</string>
+	<key>DATABASE_URL</key>
+	<string>https://mrdraper-mobile-app.firebaseio.com</string>
+</dict>
+</plist>
