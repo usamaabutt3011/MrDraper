@@ -29,7 +29,7 @@ class Login extends Component {
         super(props);
         this.state = {
             email: 'ulugbek_u@hotmail.com', //ulugbek_u@hotmail.com
-            password: 'mrdraper18',//mrdraper18
+            password: 'mrdraper19',//mrdraper18
             showPassword: true,
             isModalVisible: false,
             first_screen: true,

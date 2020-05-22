@@ -70,11 +70,10 @@ class Referrals extends Component {
         //     })
         //     .catch((err) => console.error('An error occurred', err));
         const shareOptions = {
-            title: '',
-            message: '',
+            title: "Mr.Draper",
+            message: "Share via social media",
             url: `http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`,
             social: Share.Social.WHATSAPP,
-            whatsAppNumber: ""  // country code + phone number
         };
         Share.shareSingle(shareOptions);
     }
@@ -125,6 +124,12 @@ class Referrals extends Component {
     }
     render() {
         const { userInfo, inviteHistory, inviteRes } = this.props;
+        let shareOptions = {
+            title: "MrDraper",
+            message: "Share this link",
+            url: `http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`,
+            subject: "Share Link" //  for email
+        };
         return (
             <View
                 style={{ flexGrow: 1 }}
@@ -202,22 +207,25 @@ class Referrals extends Component {
                                 <View style={{ flexDirection: 'row', marginVertical: WP('5'), alignSelf: 'center', marginBottom: WP('10') }}>
                                     <Avatar
                                         rounded
-                                        onPress={() => this.openTwitter('')}
                                         overlayContainerStyle={{ backgroundColor: colors.black }}
                                         icon={{ name: 'logo-twitter', type: 'ionicon', color: '#fff', underlayColor: 'red', size: WP('5') }}
+                                        // onPress={() => this.openTwitter('')}
+                                        onPress={() => Share.open(shareOptions)}
                                     />
                                     <Avatar
                                         rounded
-                                        onPress={() => this.makeWhatsppMsg(userInfo.userProfile.result.stylist_phone)}
                                         overlayContainerStyle={{ backgroundColor: colors.black }}
                                         containerStyle={{ marginHorizontal: WP('8') }}
                                         icon={{ name: 'logo-whatsapp', type: 'ionicon', color: '#fff', underlayColor: 'red', size: WP('5') }}
-                                    />
+                                        // onPress={() => this.makeWhatsppMsg(userInfo.userProfile.result.stylist_phone)}
+                                        onPress={() => Share.open(shareOptions)}
+                                        />
                                     <Avatar
                                         rounded
-                                        onPress={() => this.openFacebook(userInfo.userProfile.result.fb_profile)}
                                         overlayContainerStyle={{ backgroundColor: colors.black }}
                                         icon={{ name: 'facebook', type: 'font-awesome', color: '#fff', underlayColor: 'red', size: WP('5') }}
+                                        // onPress={() => this.openFacebook(userInfo.userProfile.result.fb_profile)}
+                                        onPress={() => Share.open(shareOptions)}
                                     />
                                 </View>
                             </View>

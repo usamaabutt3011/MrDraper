@@ -85,7 +85,6 @@ class WalletDetails extends Component {
                         <View style={{ borderRadius: 3, backgroundColor: colors.white, alignSelf: 'center', overflow: 'hidden', marginBottom: WP('5') }}>
                             {
                                 walletDetails.walletDetailRes.user.result.wallet_entries && walletDetails.walletDetailRes.user.result.wallet_entries.map((item, key) => {
-
                                     return (
                                         this.historyCard(item, key)
                                     )
@@ -93,7 +92,6 @@ class WalletDetails extends Component {
                             }
                             {
                                 walletDetails.walletDetailRes.user.result.wallet_spends && walletDetails.walletDetailRes.user.result.wallet_spends.map((item, key) => {
-
                                     return (
                                         this.historyCard(item, key)
                                     )

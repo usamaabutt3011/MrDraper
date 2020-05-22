@@ -139,18 +139,17 @@ class AppSettings extends Component {
           style={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
         >
-
           <View style={{ marginHorizontal: WP('6') }}>
             <LargeTitle
               text={`App Settings`}
               style={{ alignSelf: 'flex-start', fontSize: WP('7'), marginVertical: WP('5') }}
             />
-            <SmallText
+            {/* <SmallText
               text={`PUSH NOTIFICATIONS`}
               style={{ color: colors.mediumGrey, alignSelf: 'flex-start', marginVertical: WP('2') }}
-            />
+            /> */}
           </View>
-          <View style={styles.rowContainer}>
+          {/* <View style={styles.rowContainer}>
             <SmallText
               text={`Promotions`}
               style={{ alignSelf: 'flex-start', marginVertical: WP('2') }}
@@ -175,7 +174,7 @@ class AppSettings extends Component {
               onValueChange={() => this.toggleSwitch('message')}
               value={isEnabledMessage}
             />
-          </View>
+          </View> */}
           {
             isTouchID || isFaceID ?
               <View>

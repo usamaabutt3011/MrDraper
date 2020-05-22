@@ -64,15 +64,12 @@ class MyStylist extends Component {
             .catch((err) => console.error('An error occurred', err));
     }
     makeWhatsppMsg(phoneNum) {
-        Linking.canOpenURL(`whatsapp://send?phone=${phoneNum}`)
-            .then((supported) => {
-                if (!supported) {
-                    console.log("Can't handle url: " + `whatsapp://send?phone=${phoneNum}`);
-                } else {
-                    return Linking.openURL(`whatsapp://chat?`);
-                }
-            })
-            .catch((err) => console.error('An error occurred', err));
+        let url = 'whatsapp://send?text=' + `&phone=${phoneNum.substring(1)}`;
+        Linking.openURL(url).then((data) => {
+            console.log('WhatsApp Opened');
+        }).catch(() => {
+            alert('Make sure Whatsapp installed on your device');
+        });
     }
     toggleModle = async () => {
         this.setState({
@@ -90,7 +87,6 @@ class MyStylist extends Component {
     }
     render() {
         const { stylist, userInfo } = this.props;
-        console.log('Stylist Email==============:', stylist.stylistInfo );
         const { posts } = this.state;
         return (
             <View
@@ -147,7 +143,8 @@ class MyStylist extends Component {
                                     rounded
                                     overlayContainerStyle={{ backgroundColor: colors.black }}
                                     icon={{ name: 'logo-whatsapp', type: 'ionicon', color: '#fff', underlayColor: 'red', size: WP('5') }}
-                                    onPress={() => this.makeWhatsppMsg(userInfo.userProfile.result.stylist_phone)}
+                                    onPress={() => this.makeWhatsppMsg(stylist.stylistInfo ? stylist.stylistInfo.result.stylist_phone : userInfo.userProfile.result.stylist_phone)}
+                                    // onPress={() => this.sendOnWhatsApp()}
                                 />
                                 <Avatar
                                     rounded
@@ -160,7 +157,7 @@ class MyStylist extends Component {
                                     rounded
                                     overlayContainerStyle={{ backgroundColor: colors.black }}
                                     icon={{ name: 'phone', type: 'font-awesome', color: '#fff', underlayColor: 'red', size: WP('5') }}
-                                    onPress={() => this.makeCall(userInfo.userProfile.result.stylist_phone)}
+                                    onPress={() => this.makeCall(stylist.stylistInfo ? stylist.stylistInfo.result.stylist_phone : userInfo.userProfile.result.stylist_phone)}
                                 />
                             </View>
                         </View>

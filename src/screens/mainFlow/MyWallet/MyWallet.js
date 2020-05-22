@@ -68,15 +68,21 @@ class MyWallet extends Component {
             .catch((err) => console.error('An error occurred', err));
     }
     makeWhatsppMsg(phoneNum) {
-        Linking.canOpenURL(`whatsapp://send?phone=${phoneNum}`)
-            .then((supported) => {
-                if (!supported) {
-                    console.log("Can't handle url: " + `whatsapp://send?phone=${phoneNum}`);
-                } else {
-                    return Linking.openURL(`whatsapp://send?phone=${phoneNum}`);
-                }
-            })
-            .catch((err) => console.error('An error occurred', err));
+        let url = 'whatsapp://send?text=' + `&phone=${phoneNum.substring(1)}`;
+        Linking.openURL(url).then((data) => {
+            console.log('WhatsApp Opened');
+        }).catch(() => {
+            alert('Make sure Whatsapp installed on your device');
+        });
+        // Linking.canOpenURL(`whatsapp://send?phone=${phoneNum}`)
+        //     .then((supported) => {
+        //         if (!supported) {
+        //             console.log("Can't handle url: " + `whatsapp://send?phone=${phoneNum}`);
+        //         } else {
+        //             return Linking.openURL(`whatsapp://send?phone=${phoneNum}`);
+        //         }
+        //     })
+        //     .catch((err) => console.error('An error occurred', err));
     }
     getVoucherRequest = async () => {
         const { barcode } = this.state;
@@ -225,6 +231,14 @@ class MyWallet extends Component {
                                         />
                                     </View>
                                 </View>
+                                <SmallText
+                                    text={`Other links`}
+                                    style={{ marginHorizontal: WP('5'), marginBottom: WP('3'), fontSize: WP('3.5'), color: colors.mediumGrey }}
+                                />
+                                 <MediumTitle
+                                    text={'REDMEEM MEMBERSHIP . SEND A GIFT CARD'}
+                                    style={{ marginHorizontal: WP('5'), marginBottom: WP('10'), fontFamily: family.boldText, fontSize: WP('4'), color: colors.mediumGrey }}
+                                />
                             </ScrollView>
                     }
                 </View>
