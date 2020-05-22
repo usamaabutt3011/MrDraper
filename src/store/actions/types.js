@@ -220,3 +220,9 @@ export const BIOMETRIC_ICON_SHOW = 'BIOMETRIC_ICON_SHOW';
 export const BIOMETRIC_ICON_HIDE = 'BIOMETRIC_ICON_HIDE';
 export const FACE_ID_ICON_SHOW = 'FACE_ID_ICON_SHOW';
 export const FACE_ID_ICON_HIDE = 'FACE_ID_ICON_HIDE';
+
+// types for add card for billing
+export const BILLING_TRACK = 'BILLING_TRACK';
+export const BILLING_SUCCESS = 'BILLING_SUCCESS';
+export const BILLING_FAILURE = 'BILLING_FAILURE';
+export const BILLING_CLEAR = 'BILLING_CLEAR';

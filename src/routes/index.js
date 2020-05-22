@@ -15,6 +15,7 @@ import StyleQuizStack from '../screens/authFlow/styleQuiz'
 import DrawerComponent from '../components/drawer';
 import WalletStack from '../screens/mainFlow/MyWallet';
 import GiftCardStack from '../screens/mainFlow/GiftCard';
+import Billing from '../screens/mainFlow/Billing';
 //APP
 import MyPackages from '../screens/mainFlow/MyPackages/MyPackages';
 //Pickup Request
@@ -38,7 +39,8 @@ export const drawerApp = createDrawerNavigator({
     GiftCardStack: GiftCardStack,
     ProfileStack: ProfileStack,
     FeedBack: FeedBack,
-    AppSettings: AppSettings
+    AppSettings: AppSettings,
+    Billing: Billing
 }, {
     initialRouteName: 'TabStack',
     contentComponent: props => <DrawerComponent {...props} />,

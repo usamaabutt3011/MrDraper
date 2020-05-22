@@ -54,6 +54,8 @@ import pickUpRequestReducer from './reducers/package-reducers/pick-up-request-re
 import giftCardReducer from './reducers/gift-card-reducers/gift-card-reducers';
 //****************** App Settings Reducers ******************//
 import settingReducer from './reducers/setting-reducer/setting-reducer';
+//****************** Add Payment Cards in Billing ******************//
+import billingReducer from './reducers/billing-reducers/billing-reducers';
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -89,6 +91,7 @@ const rootReducer = combineReducers({
     updateProfilePicReducer: updateProfilePicReducer,
     invitationHistoryReducer: invitationHistoryReducer,
     updatePreferencesReducer: updatePreferencesReducer,
+    billing: billingReducer,
 });
 
 const persistConfig = {

@@ -109,7 +109,7 @@ class Drawer extends Component {
                             />
                         </View>
                         {this.renderRowItems('MY WALLET', 'title', 'WalletStack')}
-                        {this.renderRowItems('BILLING', 'title', '')}
+                        {this.renderRowItems('BILLING', 'title', 'Billing')}
                         <TouchableOpacity
                             style={drawerStyles.dividedRow}
                             onPress={() => this.toggleDetailOptions()}
