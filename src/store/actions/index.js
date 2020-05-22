@@ -85,3 +85,6 @@ export {
     appSettings,
     faceIDSettings
 } from './setting-action/setting-action';
+export {
+    AddPaymentCard,
+} from './billing-actions/billing-actions';
