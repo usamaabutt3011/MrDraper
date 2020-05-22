@@ -56,6 +56,7 @@ import giftCardReducer from './reducers/gift-card-reducers/gift-card-reducers';
 import settingReducer from './reducers/setting-reducer/setting-reducer';
 //****************** Add Payment Cards in Billing ******************//
 import billingReducer from './reducers/billing-reducers/billing-reducers';
+import billingDetailReducer from './reducers/billing-reducers/billing-detail-reducer';
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -70,6 +71,7 @@ const rootReducer = combineReducers({
     socialLinks: socialLinkReducer,
     areaListReducer: areaListReducer,
     feedbackReducer: feedbackReducer,
+    billingDetail: billingDetailReducer,
     resetPassword: resetPasswordReducer,
     emailValidate: emailValidateReducer,
     selectPackage: selectPackageReducer,
@@ -109,6 +111,7 @@ const persistConfig = {
         'selectPackage',
         'emailValidate',
         'addressesList',
+        // 'billingDetail',
         // 'settingReducer',
         'feedbackReducer',
         'areaListReducer',

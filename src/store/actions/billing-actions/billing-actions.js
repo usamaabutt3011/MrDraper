@@ -44,3 +44,44 @@ export const AddPaymentCard = (params) => {
   }
 }
 
+//=======================================================================================================
+//get Billing Details
+export function getbillingLoading() {
+  return {
+    type: TYPES.GET_BILLING_REQUEST,
+  }
+}
+
+export function getbillingSuccess(data) {
+  return {
+    type: TYPES.GET_BILLING_SUCCESS,
+    data,
+  }
+}
+
+export function getbillingFailure(error) {
+  return {
+    type: TYPES.GET_BILLING_FAILURE,
+    error
+  }
+}
+
+export const getPaymentDetails = (params) => {
+  console.log('[get-billing-actions.js] Params obj', params);
+  return async dispatch => {
+    // dispatch(billingLoading())
+    try {
+      let response = await Api.postAxios(endPoints.getCardDetails, params);
+      if (response.isSuccess && response.statusCode === 200) {
+        dispatch(getbillingSuccess(response))
+        console.log('[get-billing-action] success case!!!!!!!!!', response);
+      } else {
+        console.log('[get-Billing-action] failure response ', response);
+        dispatch(getbillingFailure(response))
+      }
+    } catch (error) {
+      console.log('[get-billing-action] catch response ', error);
+      dispatch(getbillingFailure(error))
+    }
+  }
+}

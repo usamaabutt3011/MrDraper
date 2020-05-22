@@ -159,11 +159,11 @@ class SelectItem extends Component {
         const { PackageRequestObjAction, packageRequest } = this.props;
         var params = packageRequest.packageRequestObj
         params.needs = needs; // local state
-        console.log('===========================================================================================================')
-        console.log('[SelectItem.js] SelectItem obj edited', params)
+        // console.log('===========================================================================================================')
+        // console.log('[SelectItem.js] SelectItem obj edited', params)
         await PackageRequestObjAction(params)
-        console.log('[SelectItem.js] SelectItem obj edited', packageRequest.packageRequestObj)
-        console.log('===========================================================================================================')
+        // console.log('[SelectItem.js] SelectItem obj edited', packageRequest.packageRequestObj)
+        // console.log('===========================================================================================================')
     }
     next = async() => {
         const { needs } = this.state;
@@ -312,7 +312,7 @@ class SelectItem extends Component {
                     <Text style={{ marginHorizontal: WP('5'), fontSize: 13 }}>
                         You've selected
                         <Text style={{ fontSize: 13, fontWeight: 'bold' }}> {packageRequest.packageRequestObj.needs.length} </Text>
-                        brands.
+                        items.
                     </Text>
                     <Button
                         title='NEXT'

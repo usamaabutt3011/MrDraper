@@ -129,8 +129,8 @@ class DeliveryDetailsConfirmation extends Component {
                             <Button
                                 disabled={isDisable}
                                 title={'YES, DETAILS ARE CORRECT'}
-                                // onPress={() => this.props.navigation.push('PaymentDetail')}
-                                onPress={() => this.onPay()}
+                                onPress={() => this.props.navigation.push('ConfirmationMessage')}
+                                // onPress={() => this.onPay()}
                                 style={{ width: WP('80'), alignSelf: 'center', marginBottom: WP('6') }}
                             />
                         </View>

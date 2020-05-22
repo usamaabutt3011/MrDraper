@@ -87,4 +87,5 @@ export {
 } from './setting-action/setting-action';
 export {
     AddPaymentCard,
+    getPaymentDetails
 } from './billing-actions/billing-actions';

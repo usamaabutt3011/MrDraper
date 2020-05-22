@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import { View, Image, ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { Header, LargeTitle, NormalText, MediumText, Button, CustomInputField } from '../../../../../components';
+import { Header, LargeTitle, NormalText, MediumText, Button, CustomInputField, VerifyingModal } from '../../../../../components';
 import { WP, data, colors, appImages } from '../../../../../services';
 import { packageRequest } from '../../../../../store/actions';
 import { styles } from '../styles';
+import { RNPayFort, getPayFortDeviceId } from "@logisticinfotech/react-native-payfort-sdk/PayFortSDK/PayFortSDK";
 
 class Confirmation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            comment: "Comment Added!"
+            comment: "Comment Added!",
+            showSuccess: false,
+            isShowPaymentModal: false,
+            showSuccessModal: false
         }
     }
     componentDidMount = async() => {
@@ -49,8 +53,52 @@ class Confirmation extends Component {
             }
         }
     }
+    showPaymentModals = async () => {
+        this.setState({ isShowPaymentModal: true })
+    
+        setTimeout(() => {
+          this.setState({ showSuccessModal: true })
+          setTimeout(() => {
+            this.setState({ 
+                isShowPaymentModal: false, 
+                showSuccessModal: false, 
+                showSuccess: true 
+            },() => {
+                this.submitPackage()
+            });
+          }, 3000);
+        }, 3000);
+      }
+    AddCard = async () => {
+          try {
+            await RNPayFort({
+              command: "AUTHORIZATION",
+              access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
+              merchant_identifier: "JLNmgBYq",//"492860a6",
+              sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
+              amount: 1,
+              currencyType: "AED",
+              language: "en",
+              email: "naishadh@logisticinfotech.co.in",
+              testing: true
+            })
+              .then(async response => {
+                await this.showPaymentModals();
+                console.log("--->>>> then", response);
+              })
+              .catch(error => {
+                if (error.response_code === '00047') {
+                  this.setState({ showSuccess: true })
+                }
+                console.log("--->>>> error", error);
+              });
+          } catch (error) {
+            console.log('try error=========>', error);
+          }
+      }
     render() {
-        const { packageRequest } = this.props;
+        const { isShowPaymentModal, showSuccessModal } = this.state;
+        const { packageRequest, billingDetail } = this.props;
         return (
             <View style={styles.container}>
                 <Header
@@ -113,10 +161,17 @@ class Confirmation extends Component {
                             title={`CONFIRM`}
                             showLoader={packageRequest.loading}
                             style={styles.surpriseButton}
-                            onPress={()=> this.submitPackage()}
+                            onPress={()=>{
+                                if (billingDetail.billingDetails && billingDetail.billingDetails.result.has_card) {
+                                    this.submitPackage()
+                                } else {
+                                    this.AddCard()
+                                }
+                            }}
                         />
                     </View>
                 </ScrollView>
+                <VerifyingModal showModal={isShowPaymentModal} isSuccess={showSuccessModal} />
             </View>
         );
     }
@@ -126,6 +181,7 @@ class Confirmation extends Component {
 mapStateToProps = (state) => {
     return {
         userRes: state.login,
+        billingDetail: state.billingDetail,
         packageRequest: state.packageRequestReducer,
     }
 }

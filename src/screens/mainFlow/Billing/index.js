@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import CircleCheckIcon from 'react-native-vector-icons/AntDesign';
 import { CustomInputField, Header, Button, LargeTitle, NormalText } from '../../../components';
-import { WP, colors, family } from '../../../services';
-import { AddPaymentCard } from '../../../store/actions';
+import { WP, colors, family, appImages } from '../../../services';
+import { AddPaymentCard, getPaymentDetails } from '../../../store/actions';
 import Toast from 'react-native-simple-toast';
 import { RNPayFort, getPayFortDeviceId } from "@logisticinfotech/react-native-payfort-sdk/PayFortSDK/PayFortSDK";
 
@@ -19,9 +19,29 @@ class Billing extends Component {
     }
   }
 
+  componentDidMount = async () => {
+    this.getPaymentDetails()
+  }
+
+  getPaymentDetails = async() => {
+    const { getPaymentDetailsAction, userRes } = this.props;
+    let params = {
+      user_id: userRes.userProfile.result.user_id,
+    }
+    await getPaymentDetailsAction(params);
+  }
+
   componentWillReceiveProps = async (nextProps) => {
     const { isSuccess, isFailure, loading, error } = nextProps.billing;
-    console.log('===componentWillReceiveProps billings: ', nextProps.billing);
+    if (isSuccess) {
+      nextProps.billing.isSuccess = false
+      this.getPaymentDetails()
+      Toast.show('Thanks, Your billing has added successfully.')
+    } else {
+      
+    }
+    // console.log('===componentWillReceiveProps billings: ', nextProps.billing);
+    // console.log('===componentWillReceiveProps billings: ', nextProps);
   }
 
   selectValueButton = (value) => {
@@ -96,12 +116,13 @@ class Billing extends Component {
 
   render() {
     const { isCustom } = this.state;
-    const { } = this.props;
+    const { billingDetail } = this.props;
+    const { loading } = this.props.billing;
     return (
 
       <View style={styles.container}>
         <Header
-          drawerLeft={false}
+          drawerLeft={true}
           right={true}
           titleStyle={{ color: colors.white }}
           containerStyle={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
@@ -120,17 +141,35 @@ class Billing extends Component {
             style={{ width: '90%', fontSize: WP(7), marginHorizontal: WP('5'), marginVertical: WP('10') }}
           />
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <View style={{ marginBottom: WP('5'), borderRadius: 5, width: WP(90), overflow: 'hidden', alignItems: 'center', alignSelf: 'center', backgroundColor: colors.white }}>
-              <NormalText
-                text={`Shumaim Awanzai`}
-                style={{ fontWeight: '900', marginHorizontal: WP('5'), alignSelf: 'flex-start', marginTop: WP('3'), }}
-              />
-              <NormalText
-                text={`12345 6666 6666 66 666 `}
-                style={{ fontWeight: '200', marginHorizontal: WP('5'), alignSelf: 'flex-start', marginVertical: WP('2'), }}
-              />
-            </View>
+            {
+              billingDetail.billingDetails && billingDetail.billingDetails.result.has_card ?
+                <View style={{ marginBottom: WP('5'), borderRadius: 5, width: WP(90), overflow: 'hidden', alignItems: 'flex-start', alignSelf: 'center', backgroundColor: colors.white }}>
+                  <Image
+                    source={appImages.mastercard}
+                    style={{ height: WP('15'), width: WP('15'), resizeMode: 'contain', marginHorizontal: WP('4.5'), marginTop: WP('2') }}
+                  />
+                  <NormalText
+                    text={billingDetail.billingDetails.result.card_type}
+                    style={{ fontWeight: '600', marginHorizontal: WP('5'), alignSelf: 'flex-start', }}
+                  />
+                  <NormalText
+                    text={billingDetail.billingDetails.result.cardholder_name}
+                    style={{ fontFamily: family.boldText, fontSize: WP('5'), marginHorizontal: WP('5'), alignSelf: 'flex-start', marginTop: WP('3'), }}
+                  />
+                  <NormalText
+                    text={billingDetail.billingDetails.result.card_number}
+                    style={{ fontWeight: '200', marginHorizontal: WP('5'), alignSelf: 'flex-start', marginBottom: WP('4'), marginTop: 4 }}
+                  />
+                </View>
+                :
+                <NormalText
+                  text={`Please add payment method for billing.`}
+                  style={{ fontWeight: '200', marginHorizontal: WP('5'), alignSelf: 'flex-start', marginBottom: WP('4'), marginTop: 4 }}
+                />
+            }
             <Button
+              // disabled={loading}
+              showLoader={loading}
               title={`ADD PAYMENT METHOD`}
               onPress={() => this.AddCard()}
               style={styles.selectedButton}
@@ -146,13 +185,15 @@ class Billing extends Component {
 
 mapStateToProps = (state) => {
   return {
-    billing: state.billing,
     userRes: state.login,
+    billing: state.billing,
+    billingDetail: state.billingDetail,
   }
 }
 mapDispatchToProps = dispatch => {
   return {
     AddPaymentCardAction: (params) => dispatch(AddPaymentCard(params)),
+    getPaymentDetailsAction: (params) => dispatch(getPaymentDetails(params)),
   }
 }
 
@@ -167,7 +208,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bgColor
   },
   selectedButton: {
-    width: WP('80'),
+    width: WP('90'),
     height: WP('12'),
     backgroundColor: colors.black,
     marginVertical: WP('2')

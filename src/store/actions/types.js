@@ -226,3 +226,8 @@ export const BILLING_TRACK = 'BILLING_TRACK';
 export const BILLING_SUCCESS = 'BILLING_SUCCESS';
 export const BILLING_FAILURE = 'BILLING_FAILURE';
 export const BILLING_CLEAR = 'BILLING_CLEAR';
+
+// types for get billing details
+export const GET_BILLING_REQUEST = 'GET_BILLING_REQUEST';
+export const GET_BILLING_SUCCESS = 'GET_BILLING_SUCCESS';
+export const GET_BILLING_FAILURE = 'GET_BILLING_FAILURE';

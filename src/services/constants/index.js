@@ -36,4 +36,5 @@ export const endPoints = {
     initiateGiftCard: 'initiate_gift_card_process',
     updateGiftCard: 'update_gc_details',
     saveCard: 'save_card_token',
+    getCardDetails: 'get_card_details'
 }

@@ -2,35 +2,36 @@ import * as TYPES from '../../actions/types';
 
 const initialState = {
   loading: false,
-  paymentCards: null,
+  billingDetails: null,
   error: null,
   isSuccess: false,
   isFailure: false
 }
-const billingReducer = (state = initialState, actions) => {
+
+const billingDetailReducer = (state = initialState, actions) => {
   switch (actions.type) {
-    case TYPES.BILLING_TRACK:
+    case TYPES.GET_BILLING_REQUEST:
       return {
         ...state,
         loading: true,
         isSuccess: false,
         isFailure: false
       }
-    case TYPES.BILLING_SUCCESS:
-      console.log('[billing-reducer] success', actions.data);
+    case TYPES.GET_BILLING_SUCCESS:
+      console.log('[billing-details-reducer] success', actions.data);
       return {
         ...state,
         loading: false,
-        paymentCards: actions.data,
+        billingDetails: actions.data,
         isSuccess: true,
         isFailure: false,
         error: null,
       }
-    case TYPES.BILLING_FAILURE:
+    case TYPES.GET_BILLING_FAILURE:
       return {
         ...state,
         loading: false,
-        paymentCards: null,
+        billingDetails: null,
         error: actions.error,
         isSuccess: false,
         isFailure: true
@@ -41,4 +42,4 @@ const billingReducer = (state = initialState, actions) => {
       return state
   }
 }
-export default billingReducer;
+export default billingDetailReducer;
