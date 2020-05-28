@@ -25,13 +25,17 @@ export function myPackagesFailure (error) {
 }
 
 export const myPackagesList = (params) => {
+    console.log('[myPackagesList.js] Params obj', params);
     return async dispatch => {
         dispatch(myPackagesLoading())
         try {
             let response = await Api.postAxios(endPoints.packagesList ,params)
+            console.log('[myPackagesList-actions] myPackagesList success case', response);
             if (response.isSuccess && response.statusCode === 200) {
                 dispatch(myPackagesSuccess(response))
+                console.log('[myPackagesList-actions] myPackagesList success case', response);
             } else {
+                console.log('[myPackagesList-action] myPackagesList failure response ', response);
                 dispatch(myPackagesFailure(response))
             } 
         } catch (error) {
@@ -63,13 +67,17 @@ export function packageDetailFailure (error) {
 }
 
 export const myPackagesDetail = (params) => {
+    console.log('[myPackagesDetail.js] Params obj', params);
     return async dispatch => {
         dispatch(packageDetailLoading())
         try {
             let response = await Api.postAxios(endPoints.packageDetail ,params)
+            console.log('[myPackagesDetail-actions] myPackagesDetail case', response);
             if (response.isSuccess && response.statusCode === 200) {
                 dispatch(packageDetailSuccess(response))
+                console.log('[myPackagesDetail-actions] myPackagesDetail success case', response);
             } else {
+                console.log('[myPackagesDetail-action] myPackagesDetail failure response ', response);
                 dispatch(packageDetailFailure(response))
             } 
         } catch (error) {

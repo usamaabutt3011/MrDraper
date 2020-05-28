@@ -7,6 +7,7 @@ import { Header, Button, Loader, MediumTitle, LargeTitle, SmallText, CustomInput
 import { WP, colors, appImages, data, family } from '../../../services';
 import { getStylistInfo, walletDetail, getVoucherCode } from '../../../store/actions';
 import { styles } from './styles';
+import Share from 'react-native-share';
 import ArrowIcon from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 class MyWallet extends Component {
@@ -99,6 +100,12 @@ class MyWallet extends Component {
     }
     render() {
         const { walletDetails, userInfo, getVoucherCode } = this.props;
+        let shareOptions = {
+            title: "MrDraper",
+            message: "Share this link",
+            url: `http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`,
+            subject: "Share Link" //  for email
+        };
         return (
             <View
                 style={{ flexGrow: 1 }}
@@ -213,21 +220,24 @@ class MyWallet extends Component {
                                         <Avatar
                                             rounded
                                             overlayContainerStyle={{ backgroundColor: colors.black }}
-                                            onPress={() => this.makeWhatsppMsg(userInfo.userProfile.result.stylist_phone)}
-                                            icon={{ name: 'logo-whatsapp', type: 'ionicon', color: '#fff', underlayColor: 'red', size: WP('5') }}
+                                            icon={{ name: 'logo-twitter', type: 'ionicon', color: '#fff', underlayColor: 'red', size: WP('5') }}
+                                            // onPress={() => this.openTwitter('')}
+                                            onPress={() => Share.open(shareOptions)}
                                         />
                                         <Avatar
                                             rounded
                                             overlayContainerStyle={{ backgroundColor: colors.black }}
                                             containerStyle={{ marginHorizontal: WP('8') }}
-                                            onPress={() => this.makeEmail(userInfo.userProfile.result.email)}
-                                            icon={{ name: 'envelope', type: 'font-awesome', color: '#fff', underlayColor: 'red', size: WP('4') }}
-                                        />
+                                            icon={{ name: 'logo-whatsapp', type: 'ionicon', color: '#fff', underlayColor: 'red', size: WP('5') }}
+                                            // onPress={() => this.makeWhatsppMsg(userInfo.userProfile.result.stylist_phone)}
+                                            onPress={() => Share.open(shareOptions)}
+                                            />
                                         <Avatar
                                             rounded
                                             overlayContainerStyle={{ backgroundColor: colors.black }}
-                                            onPress={() => this.makeCall(userInfo.userProfile.result.stylist_phone)}
-                                            icon={{ name: 'phone', type: 'font-awesome', color: '#fff', underlayColor: 'red', size: WP('5') }}
+                                            icon={{ name: 'facebook', type: 'font-awesome', color: '#fff', underlayColor: 'red', size: WP('5') }}
+                                            // onPress={() => this.openFacebook(userInfo.userProfile.result.fb_profile)}
+                                            onPress={() => Share.open(shareOptions)}
                                         />
                                     </View>
                                 </View>

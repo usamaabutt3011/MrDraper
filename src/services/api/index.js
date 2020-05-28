@@ -51,11 +51,11 @@ class Api {
             // configration,
         )   
             .then((response) => {
-                // console.log('SUCCESS!!', response);
+                console.log('SUCCESS!!', response);
                 return response.data
             })
             .catch((error) => {
-                // console.log('FAILURE!!', error);
+                console.log('FAILURE!!', error);
                 return error
             });
     }
@@ -85,11 +85,11 @@ class Api {
             // configration,
         )   
             .then((response) => {
-                // console.log('SUCCESS!!', response);
+                console.log('SUCCESS!!', response);
                 return response.data
             })
             .catch((error) => {
-                // console.log('FAILURE!!', error);
+                console.log('FAILURE!!', error);
                 return error
             });
     }
@@ -104,11 +104,11 @@ class Api {
         })
         .then((response) => response.json())
         .then((responseJOSN) => {
-            // console.log('SUCCESS!!', responseJOSN);
+            console.log('SUCCESS!!', responseJOSN);
             return responseJOSN
         })
         .catch((error) => {
-            // console.log('FAILURE!!', error);
+            console.log('FAILURE!!', error);
             return error
         });   
     }

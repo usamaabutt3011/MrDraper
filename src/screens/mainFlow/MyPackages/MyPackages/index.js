@@ -24,7 +24,7 @@ class MyPackages extends Component {
       }
     componentWillReceiveProps = async (props) => {
         const { packagesList, myPackagesListAction } = props;
-        // console.log('[MyPackages.js] componentWillReceiveProps Porps: ', props);
+        console.log('[MyPackages.js] componentWillReceiveProps Porps: ', props);
     }
     getPackages = async () => {
         const { userRes, packagesList, myPackagesListAction } = this.props;

@@ -108,6 +108,7 @@ class Drawer extends Component {
                                 overlayContainerStyle={{ backgroundColor: colors.orange }}
                             />
                         </View>
+                        {this.renderRowItems('MY PACKAGES', 'title', 'TabStack')}
                         {this.renderRowItems('MY WALLET', 'title', 'WalletStack')}
                         {this.renderRowItems('BILLING', 'title', 'Billing')}
                         <TouchableOpacity

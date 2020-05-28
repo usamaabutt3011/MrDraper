@@ -5,8 +5,7 @@ import Toast from 'react-native-simple-toast';
 import { RNPayFort, getPayFortDeviceId } from "@logisticinfotech/react-native-payfort-sdk/PayFortSDK/PayFortSDK";
 import { ReceivingItemsCard, Header, Steps, LargeTitle, SmallText, Loader, VerifyingModal } from '../../../../components';
 import { WP, appImages } from '../../../../services';
-import { signUpObj } from '../../../../store/actions';
-import { submitFirstPackage } from '../../../../store/actions';
+import { submitFirstPackage, AddPaymentCard, signUpObj } from '../../../../store/actions';
 import { styles } from './styles';
 
 
@@ -72,6 +71,7 @@ class ItemsReceived extends Component {
       }
     async onPay() {
         // await this.getDeviceToken()
+        const { userRes } = this.props;
         try {
           await RNPayFort({
             command: "PURCHASE",
@@ -85,15 +85,23 @@ class ItemsReceived extends Component {
             email: "naishadh@logisticinfotech.co.in",
             testing: true
           })
-            .then(response => {
+            .then(async(response) => {
                 this.showPaymentModals()
-                console.log("--->>>> 1", response);
+                let params = {
+                    user_id: userRes.userProfile.result.user_id,
+                    card_no: response.card_number,
+                    card_holder_name: response.card_holder_name,
+                    card_type: response.payment_option,
+                    token_name: response.token_name
+                }
+                await this.props.AddPaymentCardAction(params)
+                // console.log("--->>>> 1", response);
             })
             .catch(error => {
                 if (error.response_code === '00047') {
                     this.props.navigation.push('Thankyou')
                 }
-                console.log("--->>>> 2", error);
+                // console.log("--->>>> 2", error);
             });
         } catch (error) {
           console.log('try error=========>', error);
@@ -196,12 +204,14 @@ class ItemsReceived extends Component {
 mapStateToProps = (state) => {
     return {
         signup: state.signup,
+        userRes: state.login,
         selectPackage: state.selectPackage,
     }
 }
 
 mapDispatchToProps = dispatch => {
     return {
+        AddPaymentCardAction: (params) => dispatch(AddPaymentCard(params)),
         signUpObjAction: (params, screen) => dispatch(signUpObj(params, screen)),
         submitFirstPackageAction: (params) => dispatch(submitFirstPackage(params)),
     }

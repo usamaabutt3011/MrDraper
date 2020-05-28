@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, ImageBackground } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { Avatar } from 'react-native-elements'
 import { Header, Steps, Button, LargeTitle, MediumTitle, SmallText, QuizStaticCard } from '../../../../components';

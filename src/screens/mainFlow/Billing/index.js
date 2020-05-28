@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { View, ScrollView, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import CircleCheckIcon from 'react-native-vector-icons/AntDesign';
+import Edit from 'react-native-vector-icons/FontAwesome';
 import { CustomInputField, Header, Button, LargeTitle, NormalText } from '../../../components';
-import { WP, colors, family, appImages } from '../../../services';
+import { WP, colors, family, appImages, HP } from '../../../services';
 import { AddPaymentCard, getPaymentDetails } from '../../../store/actions';
 import Toast from 'react-native-simple-toast';
 import { RNPayFort, getPayFortDeviceId } from "@logisticinfotech/react-native-payfort-sdk/PayFortSDK/PayFortSDK";
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class Billing extends Component {
   constructor(props) {
@@ -40,8 +41,8 @@ class Billing extends Component {
     } else {
       
     }
-    // console.log('===componentWillReceiveProps billings: ', nextProps.billing);
-    // console.log('===componentWillReceiveProps billings: ', nextProps);
+    console.log('===componentWillReceiveProps billings: ', nextProps.billing);
+    console.log('===componentWillReceiveProps billings: ', nextProps);
   }
 
   selectValueButton = (value) => {
@@ -57,10 +58,7 @@ class Billing extends Component {
   }
 
   AddCard = async () => {
-    // this.setState({ isCustom: false, selectedValue: value })
-
     const { userRes } = this.props;
-
     if (userRes.userProfile.isSuccess) {
       try {
         await RNPayFort({
@@ -96,7 +94,6 @@ class Billing extends Component {
         console.log('try error=========>', error);
       }
     }
-
   }
 
   navigateNextStep = async () => {
@@ -144,10 +141,22 @@ class Billing extends Component {
             {
               billingDetail.billingDetails && billingDetail.billingDetails.result.has_card ?
                 <View style={{ marginBottom: WP('5'), borderRadius: 5, width: WP(90), overflow: 'hidden', alignItems: 'flex-start', alignSelf: 'center', backgroundColor: colors.white }}>
-                  <Image
-                    source={appImages.mastercard}
-                    style={{ height: WP('15'), width: WP('15'), resizeMode: 'contain', marginHorizontal: WP('4.5'), marginTop: WP('2') }}
-                  />
+                  <View style={{ width: WP('90'), justifyContent: 'space-between', flexDirection: 'row' }}>
+                    <Image
+                      source={appImages.mastercard}
+                      style={{ height: WP('15'), width: WP('15'), resizeMode: 'contain', marginHorizontal: WP('4.5'), marginTop: WP('2') }}
+                    />
+                    <TouchableOpacity
+                      onPress={() => this.AddCard()}
+                      style={{ alignSelf: 'center', marginRight: WP('4'), marginTop: HP('3') }}
+                    >
+                      <Edit
+                        name='edit'
+                        size={30}
+                        color={colors.black}
+                      />
+                    </TouchableOpacity>
+                  </View>
                   <NormalText
                     text={billingDetail.billingDetails.result.card_type}
                     style={{ fontWeight: '600', marginHorizontal: WP('5'), alignSelf: 'flex-start', }}
