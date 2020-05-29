@@ -301,7 +301,7 @@ class MyAddresses extends Component {
                                             return (
                                                 <AddressCard
                                                     key={key}
-                                                    name={userRes.userProfile.result.name}
+                                                    name={userRes.userProfile ? userRes.userProfile.result.name : null}
                                                     item={item}
                                                     disabled={true}
                                                     showLoaderRemover={deleteAddress.loading}

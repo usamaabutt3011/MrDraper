@@ -21,7 +21,7 @@ class Billing extends Component {
   }
 
   componentDidMount = async () => {
-    this.getPaymentDetails()
+    await this.getPaymentDetails()
   }
 
   getPaymentDetails = async() => {
@@ -35,8 +35,8 @@ class Billing extends Component {
   componentWillReceiveProps = async (nextProps) => {
     const { isSuccess, isFailure, loading, error } = nextProps.billing;
     if (isSuccess) {
-      nextProps.billing.isSuccess = false
-      this.getPaymentDetails()
+      nextProps.billing.isSuccess = false;
+      await this.getPaymentDetails()
       Toast.show('Thanks, Your billing has added successfully.')
     } else {
       

@@ -38,8 +38,12 @@ export default class App extends Component {
 
   componentDidMount = async () => {
     SplashScreen.hide()
-    // enableScreens();
-    console.log('notifications count============-------:'); 
+    // enableScreens(); 
+    
+    // handling badge number
+    // let count = await firebase.notifications().getBadge();
+    // console.log('notifications count============-------:', count)
+    
     const FCM = firebase.messaging();
 
     FCM.hasPermission().then((enabled) => {

@@ -131,7 +131,7 @@ class UpdateProfile extends Component {
             this._toggleTerms()
             console.log('[Change-profile-detail.js] Change Password True', props.changePasswordRes);
         } else {
-            console.log('[Change-profile-detail.js] Change Password True', props.changePasswordRes);
+            console.log('[Change-profile-detail.js] Change Password false', props.changePasswordRes);
             if (props.changePasswordRes.isFailure) {
                 props.changePasswordRes.isFailure = false;
                 Toast.show(props.changePasswordRes.error.errors)
@@ -288,13 +288,6 @@ class UpdateProfile extends Component {
          * The second arg is the callback which sends object: response (more info in the API Reference)
          */
         ImagePicker.showImagePicker(options, async (response) => {
-            let params = {
-                user_id: userInfo.userProfile.result.user_id,
-                imgdata: `data:image/jpeg;base64,${response.data}`,
-            }
-            // console.log('Response = ', response, params);
-            await updateProfilePicAction(params)
-
             if (response.didCancel) {
                 // console.log('User cancelled image picker');
             } else if (response.error) {
@@ -302,8 +295,15 @@ class UpdateProfile extends Component {
             } else if (response.customButton) {
                 // console.log('User tapped custom button: ', response.customButton);
             } else {
-                const source = { uri: response.uri };
 
+                let params = {
+                    user_id: userInfo.userProfile.result.user_id,
+                    imgdata: `data:image/jpeg;base64,${response.data}`,
+                }
+                // console.log('Response = ', response, params);
+                await updateProfilePicAction(params)
+
+                const source = { uri: response.uri };
                 // You can also display the image using data:
                 // const source = { uri: 'data:image/jpeg;base64,' + response.data };
                 //   this.setState({ avatarSource: source });

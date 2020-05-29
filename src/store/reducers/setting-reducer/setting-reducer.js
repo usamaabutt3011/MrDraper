@@ -40,6 +40,13 @@ const settingReducer = (state = initialState, actions) => {
                 ...state,
                 isShowFaceID: false,
             }
+        case TYPES.SIGNUP_SUCCESS:
+            return {
+                isShow: false,
+                isShowFaceID: false,
+                isLoggedIn: false,
+                credentials: null
+            }
         default:
             return state
     }

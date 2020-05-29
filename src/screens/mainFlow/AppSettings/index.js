@@ -185,6 +185,14 @@ class AppSettings extends Component {
                   />
                 </View>
                 {
+                  settings.isLoggedIn == false ?
+                    <SmallText
+                      text={`Touch ID Enables, When you logged in with your valid credentials.`}
+                      style={{ alignSelf: 'center', fontSize: WP('3'), color: colors.red, marginHorizontal: WP('2'), marginVertical: WP('3') }}
+                    />
+                    : null
+                }
+                {
                   isTouchID ?
                     <View style={styles.rowContainer}>
                       <SmallText
@@ -192,6 +200,7 @@ class AppSettings extends Component {
                         style={{ alignSelf: 'flex-start', marginVertical: WP('2') }}
                       />
                       <Switch
+                        disabled={settings.isLoggedIn == false ? true : false}
                         trackColor={{ false: colors.lightGrey, true: colors.buttonColor }}
                         // thumbColor={isEnabled ? "#ffffff" : "#f4f3f4"}
                         ios_backgroundColor={colors.lightGrey}

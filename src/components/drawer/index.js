@@ -99,7 +99,7 @@ class Drawer extends Component {
                         </View>
                     </View>
                     <View style={drawerStyles.textRowContainer}>
-                        <View style={drawerStyles.dividedRow}>
+                        {/* <View style={drawerStyles.dividedRow}>
                             {this.renderRowItems('NOTIFICATION', 'title')}
                             <Avatar
                                 size="small"
@@ -107,7 +107,7 @@ class Drawer extends Component {
                                 title="12"
                                 overlayContainerStyle={{ backgroundColor: colors.orange }}
                             />
-                        </View>
+                        </View> */}
                         {this.renderRowItems('MY PACKAGES', 'title', 'TabStack')}
                         {this.renderRowItems('MY WALLET', 'title', 'WalletStack')}
                         {this.renderRowItems('BILLING', 'title', 'Billing')}

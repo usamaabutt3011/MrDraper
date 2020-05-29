@@ -102,6 +102,7 @@ const persistConfig = {
     blacklist: [
         // 'login',
         // 'signup',
+        'billing',
         'styleQuiz',
         'megicLogin',
         'stylistInfo',
@@ -111,7 +112,7 @@ const persistConfig = {
         'selectPackage',
         'emailValidate',
         'addressesList',
-        // 'billingDetail',
+        'billingDetail',
         // 'settingReducer',
         'feedbackReducer',
         'areaListReducer',

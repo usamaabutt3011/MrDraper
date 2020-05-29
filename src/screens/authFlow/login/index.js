@@ -12,6 +12,7 @@ import { colors, WP } from '../../../services';
 import { withNavigation, ScrollView } from 'react-navigation';
 import { emailValidation, loginValidation, appSettings } from '../../../store/actions';
 import FingerPrintIcon from 'react-native-vector-icons/MaterialIcons';
+import firebase, { messaging } from '@react-native-firebase/app'
 
 const optionalConfigObject = {
     title: 'Mr.Draper', // Android
@@ -128,7 +129,8 @@ class Login extends Component {
         this.props.navigation.push('MegicLogin')
     }
 
-    componentDidMount = () => {
+    componentDidMount = async() => {
+        firebase.messaging().getToken().then((res)=>console.log('-------------*****',res)).catch((error)=>console.log(error));
         const optionalConfigObject = {
             unifiedErrors: false, // use unified error messages (default false)
             passcodeFallback: false // if true is passed, itwill allow isSupported to return an error if the device is not enrolled in touch id/face id etc. Otherwise, it will just tell you what method is supported, even if the user is not enrolled.  (default false)
