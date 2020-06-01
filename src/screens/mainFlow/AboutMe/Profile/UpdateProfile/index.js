@@ -353,11 +353,12 @@ class UpdateProfile extends Component {
                                                 source={this.state.profile_image !== '' ? { uri: this.state.profile_image } : appImages.loginBackground}
                                                 activeOpacity={0.7}
                                                 onPress={() => this.pickImage()}
-                                                showEditButton={true}
+                                                showAccessory={true}
+                                                accessory={{ name: 'camera', type: 'font-awesome', color: colors.lightBlack, underlayColor: '#fff', size: WP('5') }}
+                                                onAccessoryPress={() => this.pickImage()}
                                                 containerStyle={{ marginVertical: WP('10') }}
-                                                editButton={{ name: 'camera', type: 'font-awesome', color: 'red', underlayColor: 'red', size: WP('5') }}
-                                                onEditPress={() => this.pickImage()}
-                                            />
+                                            >
+                                            </Avatar>
                                     }
 
                                     <View style={styles.nameFieldsContainer}>

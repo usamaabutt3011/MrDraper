@@ -27,11 +27,11 @@ class MyWallet extends Component {
         await walletDetailAction(params)
     }
     componentWillReceiveProps = async (props) => {
-        const { walletDetails, getVoucherCode } = this.props;
+        const { walletDetails, getVoucherCode } = props;
         console.log('[MyWallet.js] componentWillReceiveProps', props);
         //Claim voucher code
         if (getVoucherCode.isFailure) {
-            getVoucherCode.isFailure = false
+            props.getVoucherCode.isFailure = false
             Toast.show(getVoucherCode.error.errors.message)
         } else {
             if (getVoucherCode.isSuccess) {

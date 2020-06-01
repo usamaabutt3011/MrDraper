@@ -11,7 +11,7 @@ class Blogs extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            webviewURL: "https://www.mrdraper.com/blog"
+            webviewURL: "https://www.mrdraper.com/blog?webviewsource=mrdrapermobileapp"
         }
     }
 

@@ -63,6 +63,7 @@ class PaymentStep4 extends Component {
     this.props.navigation.push('LandingContent');
   }
   async onPay() {
+    const { userInfo } = this.props;
     const { giftCardData } = this.state;
     if (giftCardData.amount !== 0) {
       var ammount = giftCardData.amount*100
@@ -72,14 +73,19 @@ class PaymentStep4 extends Component {
     try {
       await RNPayFort({
         command: "PURCHASE",
-        access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
-        merchant_identifier: "JLNmgBYq",//"492860a6",
-        sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
+        access_code: "SDml7I01zNJCFuh66dAJ",//"SDml7I01zNJCFuh66dAJ",
+        merchant_identifier: "JLNmgBYq",//"JLNmgBYq",
+        sha_request_phrase: "TESTSHAOUT",//"TESTSHAOUT",
+        // access_code: "AAxmojOBICnfd3acwhNI",//"SDml7I01zNJCFuh66dAJ",
+        // merchant_identifier: "UbjSuMqG",//"JLNmgBYq",
+        // sha_request_phrase: "DRAPERIN17",//"TESTSHAOUT",
         amount: ammount,
         currencyType: "AED",
         language: "en",
         email: "naishadh@logisticinfotech.co.in",
-        testing: true
+        testing: false,
+        // email: userInfo.userProfile.result.email,
+        // sdk_token: 'ff32a0038dca432886a12b7823f5c108',
       })
         .then(response => {
             this.handlePayment()
@@ -336,6 +342,7 @@ class PaymentStep4 extends Component {
 mapStateToProps = (state) => {
   return {
     giftCard: state.giftCard,
+    userInfo: state.login,
   }
 }
 mapDispatchToProps = dispatch => {

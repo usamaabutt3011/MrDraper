@@ -71,6 +71,9 @@ export const createGiftCard = (params) => {
         if (response.isSuccess && response.statusCode === 200) {
           dispatch(giftCardSuccess(response))
           console.log('[gift-card-action] createGiftCard success case!!!!!!!!!', response);
+          console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          let registerCard = await Api.postAxios(endPoints.registerGiftCard, { barcode: response.result.barcode })
+          console.log('[gift-card-register-action] registerGiftCard success case!!!!!!!!!', registerCard);
         } else {
           console.log('[gift-card-action] createGiftCard failure response ', response);
           dispatch(giftCardFailure(response))

@@ -35,6 +35,7 @@ export const endPoints = {
     pickUpRequest: 'request_pickup_submit_feedback_new',
     initiateGiftCard: 'initiate_gift_card_process',
     updateGiftCard: 'update_gc_details',
+    registerGiftCard: 'register_gift_card',
     saveCard: 'save_card_token',
     getCardDetails: 'get_card_details'
 }
