@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ImageBackground, Text, Image, TouchableOpacity } from 'react-native';
+import { Platform, View, ImageBackground, Text, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Avatar } from 'react-native-elements';
 import TouchID from 'react-native-touch-id';
@@ -12,7 +12,8 @@ import { colors, WP } from '../../../services';
 import { withNavigation, ScrollView } from 'react-navigation';
 import { emailValidation, loginValidation, appSettings } from '../../../store/actions';
 import FingerPrintIcon from 'react-native-vector-icons/MaterialIcons';
-import firebase, { messaging } from '@react-native-firebase/app'
+import firebase, { messaging } from '@react-native-firebase/app';
+import DeviceInfo from 'react-native-device-info';
 
 const optionalConfigObject = {
     title: 'Mr.Draper', // Android
@@ -35,8 +36,35 @@ class Login extends Component {
             isModalVisible: false,
             first_screen: true,
             second_screen: true,
-            bioLogin: false
+            bioLogin: false,
+            deviceID: '',
         }
+    }
+    componentDidMount = async () => {
+        let uniqueId = DeviceInfo.getUniqueId();
+        // iOS: "iPhone7,2"
+        // Android: "goldfish"
+        // Windows: ?
+        await this.setState({ deviceID: uniqueId })
+        // console.log('deviceID====----------:', uniqueId);
+
+        // firebase.messaging().getToken().then((res) => console.log('-------------*****', res)).catch((error) => console.log(error));
+        const optionalConfigObject = {
+            unifiedErrors: false, // use unified error messages (default false)
+            passcodeFallback: false // if true is passed, itwill allow isSupported to return an error if the device is not enrolled in touch id/face id etc. Otherwise, it will just tell you what method is supported, even if the user is not enrolled.  (default false)
+        }
+        TouchID.isSupported(optionalConfigObject)
+            .then(biometryType => {
+                // Success code
+                if (biometryType === 'FaceID') {
+                    // console.log('FaceID is supported.');
+                } else {
+                    // console.log('TouchID is supported.');
+                }
+            })
+            .catch(error => {
+                // Failure code
+            });
     }
     signup = async () => {
         const { signup } = this.props;
@@ -58,6 +86,7 @@ class Login extends Component {
     }
     componentWillReceiveProps = async (props) => {
         const { first_screen, second_screen } = this.state;
+        console.log('email response===-----:', props.emailRes);
         if (first_screen) {
             if (props.emailRes.isSuccess) {
                 this.setState({
@@ -91,6 +120,7 @@ class Login extends Component {
         }
     }
     submitEmail = async () => {
+        console.log('deviceID stae====----------:', this.state.deviceID);
         const { emailValidate, emailRes } = this.props;
         try {
             let params = {
@@ -102,21 +132,28 @@ class Login extends Component {
         }
     }
     login = async (param) => {
-        const { loginAction, userRes, settings } = this.props;
+        const { loginAction, userRes, settings, emailRes } = this.props;
         let params = {};
         if (settings.isLoggedIn && param == 'bio') {
             params = {
                 email: settings.credentials.email,
                 password: settings.credentials.password,
+                user_id: emailRes.user.result.user_id,
+                device_id: this.state.deviceID,
+                device_type: Platform.OS === 'ios' ? "ios" : "android"
             };
             this.setState({ bioLogin: true })
         } else { // manual
             params = {
                 email: this.state.email,
                 password: this.state.password,
+                user_id: emailRes.user.result.user_id,
+                device_id: this.state.deviceID,
+                device_type: Platform.OS === 'ios' ? "ios" : "android"
             };
         }
         try {
+            console.log('params====----------:', params);
             await loginAction(params);
         } catch (error) {
             //error
@@ -129,25 +166,6 @@ class Login extends Component {
         this.props.navigation.push('MegicLogin')
     }
 
-    componentDidMount = async() => {
-        firebase.messaging().getToken().then((res)=>console.log('-------------*****',res)).catch((error)=>console.log(error));
-        const optionalConfigObject = {
-            unifiedErrors: false, // use unified error messages (default false)
-            passcodeFallback: false // if true is passed, itwill allow isSupported to return an error if the device is not enrolled in touch id/face id etc. Otherwise, it will just tell you what method is supported, even if the user is not enrolled.  (default false)
-        }
-        TouchID.isSupported(optionalConfigObject)
-            .then(biometryType => {
-                // Success code
-                if (biometryType === 'FaceID') {
-                    // console.log('FaceID is supported.');
-                } else {
-                    // console.log('TouchID is supported.');
-                }
-            })
-            .catch(error => {
-                // Failure code
-            });
-    }
     authentication = async () => {
         const { settings } = this.props;
         let msg;

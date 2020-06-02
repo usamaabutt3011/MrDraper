@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { Platform ,View, ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Avatar } from 'react-native-elements';
@@ -12,6 +12,8 @@ import { CustomInputField, Header, Steps, Button, MediumTitle, TinyTitle, SmallT
 import { WP, colors, appImages, data } from '../../../../services';
 import { getStylistInfo, signUpObj, createSignUp, saveSignupResponse } from '../../../../store/actions';
 import { styles } from './styles';
+import DeviceInfo from 'react-native-device-info';
+
 const profile = data.member_settings_v7.en.labels.profile;
 class PersonalDetail extends Component {
     constructor(props) {
@@ -28,6 +30,7 @@ class PersonalDetail extends Component {
             showTems: false,
             isEmailValidate: false,
             activeCalender: false,
+            deviceID: '',
             countries: [
                 {
                     name: "Saudi Arabia (‫المملكة العربية السعودية‬‎)",
@@ -187,6 +190,10 @@ class PersonalDetail extends Component {
                             if (params.birthday == '') {
                                 Toast.show('Please enter your date of birth.')
                             } else {
+                                // params.user_id= "",
+                                params.device_id= this.state.deviceID,
+                                params.device_type= Platform.OS === 'ios' ? "ios" : "android"
+                                console.log('notifications params====-------:', params);
                                 await this.props.createSignUp(params)
                             }
                         }
@@ -197,7 +204,13 @@ class PersonalDetail extends Component {
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    componentDidMount() {
+    componentDidMount = async() => {
+        let uniqueId = DeviceInfo.getUniqueId();
+        // iOS: "iPhone7,2"
+        // Android: "goldfish"
+        // Windows: ?
+        await this.setState({ deviceID: uniqueId })
+        // console.log('deviceID====----------:', uniqueId);
         this.updateInfo()
     }
     selectCountry(country) {
