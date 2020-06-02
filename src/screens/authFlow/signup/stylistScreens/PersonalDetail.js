@@ -12,6 +12,7 @@ import { CustomInputField, Header, Steps, Button, MediumTitle, TinyTitle, SmallT
 import { WP, colors, appImages, data } from '../../../../services';
 import { getStylistInfo, signUpObj, createSignUp, saveSignupResponse } from '../../../../store/actions';
 import { styles } from './styles';
+import firebase, { messaging } from '@react-native-firebase/app';
 import DeviceInfo from 'react-native-device-info';
 
 const profile = data.member_settings_v7.en.labels.profile;
@@ -209,8 +210,16 @@ class PersonalDetail extends Component {
         // iOS: "iPhone7,2"
         // Android: "goldfish"
         // Windows: ?
-        await this.setState({ deviceID: uniqueId })
+        // await this.setState({ deviceID: uniqueId })
         // console.log('deviceID====----------:', uniqueId);
+        await firebase.messaging().getToken().then((res) => {
+            console.log('-------------*****', res);
+            this.setState({
+                deviceID: res
+            })
+            // return res;
+        }).catch((error) => console.log(error));
+        
         this.updateInfo()
     }
     selectCountry(country) {
@@ -233,7 +242,7 @@ class PersonalDetail extends Component {
         const { stylist, signup } = this.props;
         const { country_code, phone_no } = this.state;
         var params = signup.signUpObj
-
+        console.log('deviceID signup====----------:', this.state.deviceID);
         return (
             <KeyboardAwareScrollView
                 contentContainerStyle={{ flexGrow: 1 }}

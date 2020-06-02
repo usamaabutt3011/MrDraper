@@ -45,10 +45,17 @@ class Login extends Component {
         // iOS: "iPhone7,2"
         // Android: "goldfish"
         // Windows: ?
-        await this.setState({ deviceID: uniqueId })
+        // await this.setState({ deviceID: uniqueId })
         // console.log('deviceID====----------:', uniqueId);
 
-        // firebase.messaging().getToken().then((res) => console.log('-------------*****', res)).catch((error) => console.log(error));
+        await firebase.messaging().getToken().then((res) => {
+            // console.log('-------------*****', res);
+            this.setState({
+                deviceID: res
+            })
+            // return res;
+        }).catch((error) => console.log(error));
+
         const optionalConfigObject = {
             unifiedErrors: false, // use unified error messages (default false)
             passcodeFallback: false // if true is passed, itwill allow isSupported to return an error if the device is not enrolled in touch id/face id etc. Otherwise, it will just tell you what method is supported, even if the user is not enrolled.  (default false)
@@ -120,7 +127,6 @@ class Login extends Component {
         }
     }
     submitEmail = async () => {
-        console.log('deviceID stae====----------:', this.state.deviceID);
         const { emailValidate, emailRes } = this.props;
         try {
             let params = {
@@ -279,6 +285,7 @@ class Login extends Component {
     render() {
         const { first_screen, second_screen } = this.state;
         const { userRes, emailRes, settings } = this.props;
+
         return (
             <KeyboardAwareScrollView
                 contentContainerStyle={loginStyles.scrollView}
