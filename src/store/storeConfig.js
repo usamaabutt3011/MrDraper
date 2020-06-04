@@ -52,6 +52,7 @@ import packageDetailReducer from './reducers/package-reducers/package-detail-red
 import pickUpRequestReducer from './reducers/package-reducers/pick-up-request-reducer';
 //****************** Gift Card Reducers ******************//
 import giftCardReducer from './reducers/gift-card-reducers/gift-card-reducers';
+import getBarCodeReducer from './reducers/gift-card-reducers/get-barcode-reducer';
 //****************** App Settings Reducers ******************//
 import settingReducer from './reducers/setting-reducer/setting-reducer';
 //****************** Add Payment Cards in Billing ******************//
@@ -63,6 +64,7 @@ const rootReducer = combineReducers({
     styleQuiz: styleQuiz,
     signup: signUpReducer,
     giftCard: giftCardReducer,
+    getBarCode: getBarCodeReducer,
     scheduleQuiz: scheduleQuiz,
     stylistInfo: getStylistInfo,
     addressesList: addressesList,
@@ -105,6 +107,7 @@ const persistConfig = {
         'billing',
         'styleQuiz',
         'megicLogin',
+        'getBarCode',
         'stylistInfo',
         'socialLinks',
         'scheduleQuiz',

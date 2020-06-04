@@ -34,6 +34,7 @@ export const endPoints = {
     packageDetail: 'get_package_detail',
     pickUpRequest: 'request_pickup_submit_feedback_new',
     initiateGiftCard: 'initiate_gift_card_process',
+    initiateCardVerification: 'initiate_card_verification',
     updateGiftCard: 'update_gc_details',
     registerGiftCard: 'register_gift_card',
     saveCard: 'save_card_token',

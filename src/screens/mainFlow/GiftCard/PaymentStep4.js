@@ -8,7 +8,7 @@ import { CustomInputField, Header, GiftCardSteps, Button, LargeTitle, SmallText,
 import { WP, colors, family } from '../../../services';
 import { styles } from './styles';
 import moment from "moment"
-import { giftCardObj, createGiftCard, GiftCardObjClear } from '../../../store/actions';
+import { giftCardObj, createGiftCard, GiftCardObjClear, getBarCode } from '../../../store/actions';
 
 class PaymentStep4 extends Component {
   constructor(props) {
@@ -25,19 +25,27 @@ class PaymentStep4 extends Component {
     const { giftCard } = this.props
     this.setState({ 
       giftCardData: giftCard.giftCardObj
-    },()=>{
-      // this.onPay()
+    }, async()=>{
+      const { giftCard } = this.props;
+      let params = giftCard.giftCardObj;
+      await this.props.getBarCodeAction(params, 'giftCard');
     });
     console.log("giftCard: ", giftCard.giftCardObj);
   }
 
   componentWillReceiveProps = async (nextProps) => {
     const { isSuccess, isFailure, loading, error } = nextProps.giftCard;
-    // console.log('===componentWillReceiveProps: ', nextProps.giftCard);
+    const { getBarCode, giftCard } = nextProps;
+    let params = giftCard.giftCardObj;
+    if (getBarCode.isSuccess && getBarCode.getBarcode.isSuccess) {
+      nextProps.getBarCode.isSuccess = false;
+      params.barcode = getBarCode.getBarcode.result.barcode;
+    }
     if (isSuccess) {
-      // this.setState({ showSuccess: true });
+      nextProps.giftCard.isSuccess = false;
       await this.showPaymentModals();
     }
+    console.log('===componentWillReceiveProps: ', nextProps, params);
   }
 
   showPaymentModals = async () => {
@@ -54,8 +62,6 @@ class PaymentStep4 extends Component {
   handlePayment = async () => {
     const { giftCard } = this.props;
     let params = giftCard.giftCardObj;
-    console.log('=========', params);
-    // this.setState({ showSuccess: true })
     await this.props.sendGiftCardAction(params);
   }
   openNewGiftCard() {
@@ -64,6 +70,8 @@ class PaymentStep4 extends Component {
   }
   async onPay() {
     const { userInfo } = this.props;
+    const { giftCard } = this.props;
+    let params = giftCard.giftCardObj;
     const { giftCardData } = this.state;
     if (giftCardData.amount !== 0) {
       var ammount = giftCardData.amount*100
@@ -75,26 +83,26 @@ class PaymentStep4 extends Component {
         command: "PURCHASE",
         access_code: "SDml7I01zNJCFuh66dAJ",//"SDml7I01zNJCFuh66dAJ",
         merchant_identifier: "JLNmgBYq",//"JLNmgBYq",
+        merchant_reference: params.barcode,
         sha_request_phrase: "TESTSHAOUT",//"TESTSHAOUT",
-        // access_code: "AAxmojOBICnfd3acwhNI",//"SDml7I01zNJCFuh66dAJ",
-        // merchant_identifier: "UbjSuMqG",//"JLNmgBYq",
-        // sha_request_phrase: "DRAPERIN17",//"TESTSHAOUT",
         amount: ammount,
         currencyType: "AED",
         language: "en",
-        email: "naishadh@logisticinfotech.co.in",
-        testing: false,
-        // email: userInfo.userProfile.result.email,
-        // sdk_token: 'ff32a0038dca432886a12b7823f5c108',
+        email: params.sender_email,
+        testing: true,
+        // access_code: "AAxmojOBICnfd3acwhNI",//"SDml7I01zNJCFuh66dAJ",
+        // merchant_identifier: "UbjSuMqG",//"JLNmgBYq",
+        // sha_request_phrase: "DRAPERIN17",//"TESTSHAOUT",
       })
         .then(response => {
             this.handlePayment()
             console.log("--->>>> 1", response);
         })
-        .catch(error => {
+        .catch(async(error) => {
             if (error.response_code === '00047') {
               this.setState({showSuccess: true})
             }
+            await this.props.getBarCodeAction(params, 'giftCard');
             console.log("--->>>> 2", error);
         });
     } catch (error) {
@@ -230,7 +238,6 @@ class PaymentStep4 extends Component {
                 text={`Payment Confirmation`}
                 style={{ width: '90%', alignSelf: 'center', fontSize: WP(9), marginHorizontal: WP('5'), marginVertical: WP('5') }}
               />
-
               <View style={styles.invoiceContainer}>
                 <View style={styles.invoiceHeader}>
                   <View style={{ flex: 0.7 }}>
@@ -341,8 +348,9 @@ class PaymentStep4 extends Component {
 
 mapStateToProps = (state) => {
   return {
-    giftCard: state.giftCard,
     userInfo: state.login,
+    giftCard: state.giftCard,
+    getBarCode: state.getBarCode,
   }
 }
 mapDispatchToProps = dispatch => {
@@ -350,6 +358,7 @@ mapDispatchToProps = dispatch => {
     giftCardObjAction: (params) => dispatch(giftCardObj(params)),
     sendGiftCardAction: (params) => dispatch(createGiftCard(params)),
     clearCardDataAction: (params) => dispatch(GiftCardObjClear(params)),
+    getBarCodeAction: (params, called) => dispatch(getBarCode(params, called)),
   }
 }
 

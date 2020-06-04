@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Edit from 'react-native-vector-icons/FontAwesome';
 import { CustomInputField, Header, Button, LargeTitle, NormalText } from '../../../components';
 import { WP, colors, family, appImages, HP } from '../../../services';
-import { AddPaymentCard, getPaymentDetails } from '../../../store/actions';
+import { AddPaymentCard, getPaymentDetails, getBarCode } from '../../../store/actions';
 import Toast from 'react-native-simple-toast';
 import { RNPayFort, getPayFortDeviceId } from "@logisticinfotech/react-native-payfort-sdk/PayFortSDK/PayFortSDK";
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -21,7 +21,12 @@ class Billing extends Component {
   }
 
   componentDidMount = async () => {
-    await this.getPaymentDetails()
+    const { userRes } = this.props;
+    let params = {
+      user_id: userRes.userProfile.result.user_id,
+    }
+    await this.getPaymentDetails();
+    await this.props.getBarCodeAction(params, 'billing');
   }
 
   getPaymentDetails = async() => {
@@ -58,7 +63,7 @@ class Billing extends Component {
   }
 
   AddCard = async () => {
-    const { userRes } = this.props;
+    const { userRes, getBarCode } = this.props;
     if (userRes.userProfile.isSuccess) {
       try {
         await RNPayFort({
@@ -66,10 +71,11 @@ class Billing extends Component {
           access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
           merchant_identifier: "JLNmgBYq",//"492860a6",
           sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
+          merchant_reference: getBarCode.getBarcode? getBarCode.getBarcode.result.barcode : 'MRDRAPER123', 
           amount: 1,
           currencyType: "AED",
           language: "en",
-          email: "naishadh@logisticinfotech.co.in",
+          email: userRes.userProfile.result.email,
           testing: true
         })
           .then(async response => {
@@ -196,6 +202,7 @@ mapStateToProps = (state) => {
   return {
     userRes: state.login,
     billing: state.billing,
+    getBarCode: state.getBarCode,
     billingDetail: state.billingDetail,
   }
 }
@@ -203,6 +210,7 @@ mapDispatchToProps = dispatch => {
   return {
     AddPaymentCardAction: (params) => dispatch(AddPaymentCard(params)),
     getPaymentDetailsAction: (params) => dispatch(getPaymentDetails(params)),
+    getBarCodeAction: (params, called) => dispatch(getBarCode(params, called)),
   }
 }
 

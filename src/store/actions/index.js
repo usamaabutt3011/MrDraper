@@ -77,6 +77,7 @@ export {
     pickUpRequest,
 } from './package-request-actions/pick-up-request-action';
 export {
+    getBarCode,
     giftCardObj,
     createGiftCard,
     GiftCardObjClear

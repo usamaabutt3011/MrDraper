@@ -5,7 +5,7 @@ import Toast from 'react-native-simple-toast';
 import { RNPayFort, getPayFortDeviceId } from "@logisticinfotech/react-native-payfort-sdk/PayFortSDK/PayFortSDK";
 import { ReceivingItemsCard, Header, Steps, LargeTitle, SmallText, Loader, VerifyingModal } from '../../../../components';
 import { WP, appImages } from '../../../../services';
-import { submitFirstPackage, AddPaymentCard, signUpObj } from '../../../../store/actions';
+import { submitFirstPackage, AddPaymentCard, signUpObj, getBarCode } from '../../../../store/actions';
 import { styles } from './styles';
 
 
@@ -24,6 +24,10 @@ class ItemsReceived extends Component {
         var params = signup.signUpObj
         // await signUpObjAction(params, "ItemsReceived")
         await signUpObjAction(params, "")
+        let parameter = {
+            user_id: signup.signupRes.result.user_id,
+        }
+        await this.props.getBarCodeAction(parameter, 'billing');
     }
     submitFirstPackage = async (packageType) => {
         const { submitFirstPackageAction, signup } = this.props;
@@ -71,18 +75,18 @@ class ItemsReceived extends Component {
       }
     async onPay() {
         // await this.getDeviceToken()
-        const { userRes } = this.props;
+        const { userRes, getBarCode } = this.props;
         try {
           await RNPayFort({
             command: "PURCHASE",
             access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
             merchant_identifier: "JLNmgBYq",//"492860a6",
-            // merchant_reference: "XYZ786-string0900",
+            merchant_reference: getBarCode.getBarcode? getBarCode.getBarcode.result.barcode : 'MRDRAPER123', 
             sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
             amount: 100,
             currencyType: "AED",
             language: "en",
-            email: "naishadh@logisticinfotech.co.in",
+            email: userRes.userProfile.result.email,
             testing: true
           })
             .then(async(response) => {
@@ -213,6 +217,7 @@ mapDispatchToProps = dispatch => {
     return {
         AddPaymentCardAction: (params) => dispatch(AddPaymentCard(params)),
         signUpObjAction: (params, screen) => dispatch(signUpObj(params, screen)),
+        getBarCodeAction: (params, called) => dispatch(getBarCode(params, called)),
         submitFirstPackageAction: (params) => dispatch(submitFirstPackage(params)),
     }
 }
