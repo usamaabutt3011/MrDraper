@@ -29,7 +29,7 @@ class Billing extends Component {
     await this.props.getBarCodeAction(params, 'billing');
   }
 
-  getPaymentDetails = async() => {
+  getPaymentDetails = async () => {
     const { getPaymentDetailsAction, userRes } = this.props;
     let params = {
       user_id: userRes.userProfile.result.user_id,
@@ -44,7 +44,7 @@ class Billing extends Component {
       await this.getPaymentDetails()
       Toast.show('Thanks, Your billing has added successfully.')
     } else {
-      
+
     }
     console.log('===componentWillReceiveProps billings: ', nextProps.billing);
     console.log('===componentWillReceiveProps billings: ', nextProps);
@@ -71,8 +71,8 @@ class Billing extends Component {
           access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
           merchant_identifier: "JLNmgBYq",//"492860a6",
           sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
-          merchant_reference: getBarCode.getBarcode? getBarCode.getBarcode.result.barcode : 'MRDRAPER123', 
-          amount: 1,
+          merchant_reference: getBarCode.getBarcode ? getBarCode.getBarcode.result.barcode : 'MRDRAPER123',
+          amount: 1 * 100,
           currencyType: "AED",
           language: "en",
           email: userRes.userProfile.result.email,
@@ -149,10 +149,10 @@ class Billing extends Component {
                 <View style={{ marginBottom: WP('5'), borderRadius: 5, width: WP(90), overflow: 'hidden', alignItems: 'flex-start', alignSelf: 'center', backgroundColor: colors.white }}>
                   <View style={{ width: WP('90'), justifyContent: 'space-between', flexDirection: 'row' }}>
                     <Image
-                      source={appImages.mastercard}
+                      source={billingDetail.billingDetails.result.card_type === 'VISA' ? appImages.visacard : appImages.mastercard}
                       style={{ height: WP('15'), width: WP('15'), resizeMode: 'contain', marginHorizontal: WP('4.5'), marginTop: WP('2') }}
                     />
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                       onPress={() => this.AddCard()}
                       style={{ alignSelf: 'center', marginRight: WP('4'), marginTop: HP('3') }}
                     >
@@ -161,7 +161,7 @@ class Billing extends Component {
                         size={30}
                         color={colors.black}
                       />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </View>
                   <NormalText
                     text={billingDetail.billingDetails.result.card_type}

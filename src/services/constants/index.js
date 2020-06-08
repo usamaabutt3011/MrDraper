@@ -1,7 +1,10 @@
 export const stagingServer = "http://stagingwebsite.mrdraper.com/api/v1/users/"
 export const ngrokServer = "http://0733cadf.ngrok.io/api/v1/users/"
+export const stagingURL = "http://stagingwebsite.mrdraper.com/"
+export const productionURL = "https://www.mrdraper.com/"
 const devTesting = false;
 export const baseURL = devTesting === false ? ngrokServer : stagingServer
+export const dynamicBaseURL = devTesting ? stagingURL : productionURL
 export const endPoints = {
     validateEmail: 'validate_email',
     login: 'validate_password',

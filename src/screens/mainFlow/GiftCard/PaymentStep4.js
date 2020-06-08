@@ -23,9 +23,9 @@ class PaymentStep4 extends Component {
 
   componentWillMount() {
     const { giftCard } = this.props
-    this.setState({ 
+    this.setState({
       giftCardData: giftCard.giftCardObj
-    }, async()=>{
+    }, async () => {
       const { giftCard } = this.props;
       let params = giftCard.giftCardObj;
       await this.props.getBarCodeAction(params, 'giftCard');
@@ -74,7 +74,7 @@ class PaymentStep4 extends Component {
     let params = giftCard.giftCardObj;
     const { giftCardData } = this.state;
     if (giftCardData.amount !== 0) {
-      var ammount = giftCardData.amount*100
+      var ammount = giftCardData.amount * 100
     } else {
       var ammount = 0;
     }
@@ -95,15 +95,15 @@ class PaymentStep4 extends Component {
         // sha_request_phrase: "DRAPERIN17",//"TESTSHAOUT",
       })
         .then(response => {
-            this.handlePayment()
-            console.log("--->>>> 1", response);
+          this.handlePayment()
+          console.log("--->>>> 1", response);
         })
-        .catch(async(error) => {
-            if (error.response_code === '00047') {
-              this.setState({showSuccess: true})
-            }
-            await this.props.getBarCodeAction(params, 'giftCard');
-            console.log("--->>>> 2", error);
+        .catch(async (error) => {
+          if (error.response_code === '00047') {
+            this.setState({ showSuccess: true })
+          }
+          await this.props.getBarCodeAction(params, 'giftCard');
+          console.log("--->>>> 2", error);
         });
     } catch (error) {
       console.log('try error=========>', error);
@@ -176,7 +176,7 @@ class PaymentStep4 extends Component {
                       style={{ fontFamily: family.normalText, color: colors.lightGrey, marginVertical: WP('2') }}
                     />
                     <SmallText
-                      text={giftCardData.amount}
+                      text={`AED ${giftCardData.amount}`}
                       style={{ fontFamily: family.boldText, color: colors.black, fontSize: WP('4'), marginBottom: WP('2') }}
                     />
                   </View>
@@ -275,7 +275,7 @@ class PaymentStep4 extends Component {
                   />
                 </View>
               </View>
-               <View style={{ marginVertical: 2, marginBottom: WP('5'), borderRadius: 5, width: WP(90), overflow: 'hidden', alignItems: 'center', alignSelf: 'center', backgroundColor: 'transparent' }}>
+              <View style={{ marginVertical: 2, marginBottom: WP('5'), borderRadius: 5, width: WP(90), overflow: 'hidden', alignItems: 'center', alignSelf: 'center', backgroundColor: 'transparent' }}>
                 {/* <LargeTitle
                   text={`Add Payment Method`}
                   style={{ width: '90%', alignSelf: 'center', fontSize: WP(7), marginHorizontal: WP('5'), marginVertical: WP('5') }}
@@ -326,14 +326,14 @@ class PaymentStep4 extends Component {
                 </View> */}
                 <Button
                   title={`PAY AED ${giftCardData.amount}`}
-                  onPress={() =>{
+                  onPress={() => {
                     this.onPay()
                     //  this.handlePayment()
-                    }}
+                  }}
                   style={{ width: WP('80'), height: WP('12'), marginVertical: WP('5') }}
                   showLoader={giftCard.loading}
                 />
-              </View> 
+              </View>
             </View>
 
           }

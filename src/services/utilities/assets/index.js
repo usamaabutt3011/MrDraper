@@ -35,6 +35,7 @@ export const appImages = {
     facerecognition: require('../../../assets/images/face-recognition.png'),
     camera: require('../../../assets/icons/camera.png'),
     mastercard: require('../../../assets/icons/mastercard.png'),
+    visacard: require('../../../assets/icons/visa.png'),
 }
 //Svgs paths
 export const appSvgs = {

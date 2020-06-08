@@ -224,8 +224,12 @@ class Login extends Component {
                     title='LOG IN VIA MAGIC LINK'
                     onPress={this.sendMegicLink}
                     titleStyle={{ color: Util.colors.darkGrey }}
-                    style={{ alignSelf: 'center', marginTop: Util.WP('5'), backgroundColor: Util.colors.buttonColorLight, marginBottom: Util.WP('10') }}
+                    style={{ alignSelf: 'center', marginTop: Util.WP('5'), backgroundColor: Util.colors.buttonColorLight, marginBottom: Util.WP('5') }}
                 />
+                <Text style={[loginStyles.forgetCon, { alignSelf: 'center' }]}>
+                    Forgot Password?
+                    <Text style={loginStyles.forgetChild} onPress={this.resetPassword}> Reset</Text>
+                </Text>
             </View>
         )
     }
@@ -282,6 +286,13 @@ class Login extends Component {
         )
     }
 
+    goBackToFirstScreen() {
+        this.setState({
+            first_screen: true,
+            second_screen: false
+        })
+    }
+
     render() {
         const { first_screen, second_screen } = this.state;
         const { userRes, emailRes, settings } = this.props;
@@ -296,6 +307,8 @@ class Login extends Component {
                     style={loginStyles.bgImgStyle}
                 >
                     <Header
+                        left={first_screen ? false : true}
+                        onPressLeft={() => this.goBackToFirstScreen()}
                         titleStyle={loginStyles.headerTitle}
                     />
                     <ScrollView>

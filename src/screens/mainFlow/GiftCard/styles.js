@@ -128,7 +128,7 @@ export const styles = StyleSheet.create({
     },
     invoiceContentContainer: {
         backgroundColor: colors.white,
-        height: WP('25'),
+        // height: WP('25'),
         width: WP('90')
     },
     invoiceRowContainer: {

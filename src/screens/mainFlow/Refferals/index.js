@@ -7,7 +7,7 @@ import Toast from 'react-native-simple-toast';
 import Share from 'react-native-share';
 
 import { Header, Button, MediumTitle, LargeTitle, SmallText, CustomInputField, Loader } from '../../../components';
-import { WP, colors, data, family } from '../../../services';
+import { WP, colors, data, family, dynamicBaseURL } from '../../../services';
 import { invitationHistory, invitationSend } from '../../../store/actions';
 import { styles } from './styles';
 class Referrals extends Component {
@@ -22,7 +22,7 @@ class Referrals extends Component {
     copyRefferalLink = async () => {
         const { userInfo } = this.props;
         Keyboard.dismiss()
-        await Clipboard.setString(`http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`)
+        await Clipboard.setString(`${dynamicBaseURL}ref/${userInfo.userProfile.result.hash_id}`)
         Toast.show('Copied!')
     }
     componentWillMount = async () => {
@@ -54,7 +54,7 @@ class Referrals extends Component {
                 // Toast.show(inviteRes.invitationRes.user.message)
                 Toast.show(`Invition already has been sent to this user.`)
             } else {
-                
+
             }
         }
     }
@@ -72,7 +72,7 @@ class Referrals extends Component {
         const shareOptions = {
             title: "Mr.Draper",
             message: "Share via social media",
-            url: `http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`,
+            url: `${dynamicBaseURL}ref/${userInfo.userProfile.result.hash_id}`,
             social: Share.Social.WHATSAPP,
         };
         Share.shareSingle(shareOptions);
@@ -82,7 +82,7 @@ class Referrals extends Component {
         // Linking.canOpenURL(`fb://page/${fb_user}`)
         //     .then((supported) => {
         //         if (!supported) {
-        //             return Linking.openURL(`https://facebook.com/sharer/sharer.php?u=http://178.62.183.214/ref/2M`);
+        //             return Linking.openURL(`https://facebook.com/sharer/sharer.php?u=${dynamicBaseURL}ref/2M`);
         //         } else {
         //             return Linking.openURL(`fb://page/${ fb_user ? fb_user : '' }`);
         //         }
@@ -91,19 +91,19 @@ class Referrals extends Component {
         const shareOptions = {
             title: '',
             message: '',
-            url: `http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`,
+            url: `${dynamicBaseURL}ref/${userInfo.userProfile.result.hash_id}`,
             social: Share.Social.FACEBOOK,
             // whatsAppNumber: ""  // country code + phone number
         };
         Share.shareSingle(shareOptions);
     }
     openTwitter(twitterURL) {
-        Linking.canOpenURL(`https://twitter.com/intent/tweet/?text=Sign%20up%20and%20get%20AED%20100%20off%20your%20first%20package&url=http://178.62.183.214/ref/2M`)
+        Linking.canOpenURL(`https://twitter.com/intent/tweet/?text=Sign%20up%20and%20get%20AED%20100%20off%20your%20first%20package&url=${dynamicBaseURL}ref/2M`)
             .then((supported) => {
                 if (!supported) {
                     return Linking.openURL(`https://www.twitter.com/`);
                 } else {
-                    return Linking.openURL(`https://twitter.com/intent/tweet/?text=Sign%20up%20and%20get%20AED%20100%20off%20your%20first%20package&url=http://178.62.183.214/ref/2M`);
+                    return Linking.openURL(`https://twitter.com/intent/tweet/?text=Sign%20up%20and%20get%20AED%20100%20off%20your%20first%20package&url=${dynamicBaseURL}ref/2M`);
                     // return Linking.openURL(`twitter://user?screen_name=${twitterUsername}`);
                 }
             })
@@ -127,7 +127,7 @@ class Referrals extends Component {
         let shareOptions = {
             title: "MrDraper",
             message: "Share this link",
-            url: `http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`,
+            url: `${dynamicBaseURL}ref/${userInfo.userProfile.result.hash_id}`,
             subject: "Share Link" //  for email
         };
         return (
@@ -162,7 +162,7 @@ class Referrals extends Component {
                                 />
                                 <CustomInputField
                                     label={'Your Referral Link'}
-                                    value={`http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`}
+                                    value={`${dynamicBaseURL}ref/${userInfo.userProfile.result.hash_id}`}
                                     disabled={true}
                                     isRightIcon={false}
                                     isMaskedInput={false}
@@ -219,7 +219,7 @@ class Referrals extends Component {
                                         icon={{ name: 'logo-whatsapp', type: 'ionicon', color: '#fff', underlayColor: 'red', size: WP('5') }}
                                         // onPress={() => this.makeWhatsppMsg(userInfo.userProfile.result.stylist_phone)}
                                         onPress={() => Share.open(shareOptions)}
-                                        />
+                                    />
                                     <Avatar
                                         rounded
                                         overlayContainerStyle={{ backgroundColor: colors.black }}
