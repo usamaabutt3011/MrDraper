@@ -1,7 +1,10 @@
 export const stagingServer = "http://stagingwebsite.mrdraper.com/api/v1/users/"
 export const ngrokServer = "http://0733cadf.ngrok.io/api/v1/users/"
+export const stagingURL = "http://stagingwebsite.mrdraper.com/"
+export const productionURL = "https://www.mrdraper.com/"
 const devTesting = false;
 export const baseURL = devTesting === false ? ngrokServer : stagingServer
+export const dynamicBaseURL = devTesting ? stagingURL : productionURL
 export const endPoints = {
     validateEmail: 'validate_email',
     login: 'validate_password',
@@ -30,6 +33,7 @@ export const endPoints = {
     invitationSend: 'send_friend_invite',
     walletDetails: 'get_my_wallet_detail',
     claimVoucher: 'claim_voucher',
+    redeemMembership: 'redeem_membership',
     packagesList: 'get_packages_list',
     packageDetail: 'get_package_detail',
     pickUpRequest: 'request_pickup_submit_feedback_new',

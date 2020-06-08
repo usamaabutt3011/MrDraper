@@ -25,7 +25,7 @@ class WalletDetails extends Component {
                 <View style={{ marginVertical: WP('5') }}>
                     <View style={{ marginHorizontal: WP('5'), flexDirection: 'row', justifyContent: 'space-between' }}>
                         <SmallText
-                            text={`${item.source}`}
+                            text={`${item.type}`}
                             style={{ fontFamily: family.boldText, fontSize: WP('4.5') }}
                         />
                         <SmallText
@@ -45,7 +45,8 @@ class WalletDetails extends Component {
                         null
                 }
             </View>
-        )}
+        )
+    }
 
     render() {
         const { walletDetails } = this.props;
@@ -76,7 +77,7 @@ class WalletDetails extends Component {
                             <LargeTitle
                                 text={`AED ${walletDetails.walletDetailRes ? walletDetails.walletDetailRes.user.result.total : ''}`}
                                 style={{ marginHorizontal: WP('5'), fontFamily: family.boldText, marginTop: WP('2'), marginBottom: WP('5') }}
-                            />                           
+                            />
                         </View>
                         <MediumTitle
                             text={`Balance History`}

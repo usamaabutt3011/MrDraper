@@ -68,6 +68,7 @@ export {
 export {
     walletDetail,
     getVoucherCode,
+    getRedeemMembershipVoucher
 } from './wallet-actions/wallect-actions';
 export {
     myPackagesList,
