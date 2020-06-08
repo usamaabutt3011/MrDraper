@@ -33,6 +33,7 @@ export const endPoints = {
     invitationSend: 'send_friend_invite',
     walletDetails: 'get_my_wallet_detail',
     claimVoucher: 'claim_voucher',
+    redeemMembership: 'redeem_membership',
     packagesList: 'get_packages_list',
     packageDetail: 'get_package_detail',
     pickUpRequest: 'request_pickup_submit_feedback_new',

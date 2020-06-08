@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Keyboard, Clipboard, Linking } from 'react-native';
+import { View, ScrollView, Keyboard, Clipboard, Linking, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { Avatar } from 'react-native-elements';
 import Toast from 'react-native-simple-toast';
 import { Header, Button, Loader, MediumTitle, LargeTitle, SmallText, CustomInputField } from '../../../components';
-import { WP, colors, appImages, data, family } from '../../../services';
-import { getStylistInfo, walletDetail, getVoucherCode } from '../../../store/actions';
+import { WP, colors, appImages, data, family, dynamicBaseURL } from '../../../services';
+import { getStylistInfo, walletDetail, getVoucherCode, getRedeemMembershipVoucher, getBarCode } from '../../../store/actions';
 import { styles } from './styles';
 import Share from 'react-native-share';
 import ArrowIcon from 'react-native-vector-icons/AntDesign';
@@ -25,9 +25,13 @@ class MyWallet extends Component {
             user_id: userInfo.userProfile.result.user_id
         }
         await walletDetailAction(params)
+        let parameter = {
+            user_id: userInfo.userProfile.result.user_id,
+        }
+        await this.props.getBarCodeAction(parameter, 'billing');
     }
     componentWillReceiveProps = async (props) => {
-        const { walletDetails, getVoucherCode } = props;
+        const { walletDetails, getVoucherCode, getMembershipVoucherCode } = props;
         console.log('[MyWallet.js] componentWillReceiveProps', props);
         //Claim voucher code
         if (getVoucherCode.isFailure) {
@@ -39,11 +43,19 @@ class MyWallet extends Component {
                 Toast.show(getVoucherCode.getVoucherCodeRes.user.result.message)
             }
         }
+
+        if (getMembershipVoucherCode.isFailure) {
+            props.getMembershipVoucherCode.isFailure = false
+            Toast.show(getMembershipVoucherCode.error.errors.message)
+        } else if (getMembershipVoucherCode.isSuccess) {
+            getMembershipVoucherCode.isSuccess = false
+            Toast.show(getMembershipVoucherCode.getMembershipVoucherRes.user.result.message)
+        }
     }
     copyRefferalLink = async () => {
         const { userInfo } = this.props;
         Keyboard.dismiss()
-        await Clipboard.setString(`http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`)
+        await Clipboard.setString(`${dynamicBaseURL}ref/${userInfo.userProfile.result.hash_id}`)
         Toast.show('Copied!')
     }
     makeCall(phoneNum) {
@@ -98,12 +110,24 @@ class MyWallet extends Component {
             await getVoucherCodeAction(params)
         }
     }
+
+    redeemMembershipRequest = async () => {
+        const { barcode } = this.state;
+        const { getRedeemMembershipVoucherAction, userInfo, getBarCode } = this.props;
+        let params = {
+            user_id: userInfo.userProfile.result.user_id,
+            barcode: getBarCode.getBarcode ? getBarCode.getBarcode.result.barcode : 'MRDRAPER123'
+        }
+
+        await getRedeemMembershipVoucherAction(params)
+
+    }
     render() {
-        const { walletDetails, userInfo, getVoucherCode } = this.props;
+        const { walletDetails, userInfo, getVoucherCode, getMembershipVoucherCode } = this.props;
         let shareOptions = {
             title: "MrDraper",
             message: "Share this link",
-            url: `http://178.62.183.214/ref/${userInfo.userProfile.result.hash_id}`,
+            url: `${dynamicBaseURL}ref/${userInfo.userProfile.result.hash_id}`,
             subject: "Share Link" //  for email
         };
         return (
@@ -195,7 +219,7 @@ class MyWallet extends Component {
                                     />
                                     <CustomInputField
                                         label={'Your Referral Link'}
-                                        value={`http://178.62.183.214/ref/${userInfo.userProfile ? userInfo.userProfile.result.hash_id : ""}`}
+                                        value={`${dynamicBaseURL}ref/${userInfo.userProfile ? userInfo.userProfile.result.hash_id : ""}`}
                                         disabled={true}
                                         isRightIcon={false}
                                         isMaskedInput={false}
@@ -231,7 +255,7 @@ class MyWallet extends Component {
                                             icon={{ name: 'logo-whatsapp', type: 'ionicon', color: '#fff', underlayColor: 'red', size: WP('5') }}
                                             // onPress={() => this.makeWhatsppMsg(userInfo.userProfile.result.stylist_phone)}
                                             onPress={() => Share.open(shareOptions)}
-                                            />
+                                        />
                                         <Avatar
                                             rounded
                                             overlayContainerStyle={{ backgroundColor: colors.black }}
@@ -245,10 +269,35 @@ class MyWallet extends Component {
                                     text={`Other links`}
                                     style={{ marginHorizontal: WP('5'), marginBottom: WP('3'), fontSize: WP('3.5'), color: colors.mediumGrey }}
                                 />
-                                 <MediumTitle
-                                    text={'REDMEEM MEMBERSHIP . SEND A GIFT CARD'}
-                                    style={{ marginHorizontal: WP('5'), marginBottom: WP('10'), fontFamily: family.boldText, fontSize: WP('4'), color: colors.mediumGrey }}
-                                />
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    {getMembershipVoucherCode.loading ?
+                                        <View style={{ marginTop: WP(-2), width: WP(40), alignContent: 'center' }}>
+                                            <ActivityIndicator style={{ marginTop: 0, paddingTop: 0 }} color={colors.mediumGrey} animating size={WP('10')} />
+                                        </View>
+                                        :
+                                        <TouchableOpacity
+                                            onPress={() => this.redeemMembershipRequest()}>
+
+                                            <MediumTitle
+                                                text={'REDEEM MEMBERSHIP'}
+                                                style={{ marginHorizontal: WP('5'), marginBottom: WP('10'), fontFamily: family.boldText, fontSize: WP('4'), color: colors.mediumGrey }}
+                                            />
+                                            {/* <Button
+                                            title={'REDEEM MEMBERSHIP'}
+                                            showLoader={getMembershipVoucherCode.loading}
+                                            onPress={() => this.redeemMembershipRequest()}
+                                            style={{ width: WP(50), paddingTop: 0, marginTop: 0, backgroundColor: colors.blackTransparent, }}
+                                        /> */}
+                                        </TouchableOpacity>
+                                    }
+                                    <TouchableOpacity
+                                        onPress={() => this.props.navigation.navigate('GiftCardStack')}>
+                                        <MediumTitle
+                                            text={'SEND A GIFT CARD'}
+                                            style={{ marginHorizontal: WP('5'), marginBottom: WP('10'), fontFamily: family.boldText, fontSize: WP('4'), color: colors.mediumGrey }}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
                             </ScrollView>
                     }
                 </View>
@@ -263,6 +312,8 @@ mapStateToProps = (state) => {
         stylist: state.stylistInfo,
         walletDetails: state.walletDetailReducer,
         getVoucherCode: state.getVoucherCodeReducer,
+        getMembershipVoucherCode: state.getMembershipVoucherReducer,
+        getBarCode: state.getBarCode
     }
 }
 mapDispatchToProps = dispatch => {
@@ -270,6 +321,8 @@ mapDispatchToProps = dispatch => {
         getStylistDetail: (params) => dispatch(getStylistInfo(params)),
         walletDetailAction: (params) => dispatch(walletDetail(params)),
         getVoucherCodeAction: (params) => dispatch(getVoucherCode(params)),
+        getRedeemMembershipVoucherAction: (params) => dispatch(getRedeemMembershipVoucher(params)),
+        getBarCodeAction: (params, called) => dispatch(getBarCode(params, called)),
     }
 }
 

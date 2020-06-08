@@ -45,6 +45,7 @@ import invitationReducer from './reducers/refferal-reducers/invitation-send-redu
 //****************** Wallet Reducers ******************//
 import walletDetailReducer from './reducers/wallect-reducers/wallet-detail-reducer';
 import getVoucherCodeReducer from './reducers/wallect-reducers/get-voucher.code-reducer';
+import getMembershipVoucherReducer from './reducers/wallect-reducers/get-membership-code-reducer';
 //****************** My Packages Request Reducers ******************//
 import myPackagesReducer from './reducers/package-reducers/my-packages-reducer';
 import packageDetailReducer from './reducers/package-reducers/package-detail-reducer';
@@ -90,6 +91,7 @@ const rootReducer = combineReducers({
     updateRequestReducer: updateRequestReducer,
     removeAddressReducer: removeAddressReducer,
     getVoucherCodeReducer: getVoucherCodeReducer,
+    getMembershipVoucherReducer: getMembershipVoucherReducer,
     changePasswordReducer: changePasswordReducer,
     packageRequestReducer: packageRequestReducer,
     updateProfilePicReducer: updateProfilePicReducer,
