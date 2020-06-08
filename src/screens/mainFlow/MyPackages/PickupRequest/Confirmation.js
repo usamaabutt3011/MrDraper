@@ -15,15 +15,15 @@ class Confirmation extends Component {
             list: [
                 {
                     number: 1,
-                    desc: `Your stylist, Kate, will review your request and create a personalized package for you. She will reach out if she's got any questions or you can contact her here.`
+                    desc: `In the next few days, our courior will contact you to schedule the date/time for collection.`
                 },
                 {
                     number: 2,
-                    desc: `Once your box is ready, our courier will contact you to schedule a date/time for delivery.`
+                    desc: `Once your order is collected and received back at Mr.Draper HQ our warehouse team will review the items returned and the card on file gets charged.`
                 },
                 {
                     number: 3,
-                    desc: 'After receiving the package, you get to try out the outfit. You pay for what you keep and send the rest back.'
+                    desc: `You're all set! If you've requested for alterations or size changes, your stylist will reach out.`
                 },
             ]
         }
@@ -40,7 +40,7 @@ class Confirmation extends Component {
             .catch((err) => console.error('An error occurred', err));
     }
     render() {
-        const { } = this.props;
+        const { userRes } = this.props;
         const { list } = this.state;
         return (
             <View style={styles.container}>
@@ -62,8 +62,12 @@ class Confirmation extends Component {
                             style={{ marginHorizontal: WP('5'), marginTop: WP('5') }}
                         />
                         <SmallText
-                            text={`Hey John, thank you for confirming your order. Here's what will happen next:`}
-                            style={{ marginHorizontal: WP('5'), marginVertical: WP('5'), lineHeight: 20 }}
+                            text={`Thank you ${userRes.userProfile.result.name}, for completing your pick-up request.`}
+                            style={{ marginHorizontal: WP('5'), lineHeight: 20 }}
+                        />
+                        <SmallText
+                            text={`Here's what will happen next:`}
+                            style={{ marginHorizontal: WP('5'), marginBottom: WP('5'), lineHeight: 20 }}
                         />
                         {
                             list.map((item, key) => {
@@ -111,6 +115,7 @@ mapStateToProps = (state) => {
     return {
         stylist: state.stylistInfo,
         signup: state.signup,
+        userRes: state.login,
     }
 }
 mapDispatchToProps = dispatch => {

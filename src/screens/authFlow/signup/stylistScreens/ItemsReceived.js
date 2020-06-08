@@ -49,8 +49,8 @@ class ItemsReceived extends Component {
         if (isSuccess) {
             console.log('[socialLink.js] socialLink Information True', props.selectPackage);
             // Toast.show(selectedPackage.message)
-            // props.navigation.push('PaymentDetails')
-            this.onPay()
+            props.navigation.push('PaymentDetails')
+            // this.onPay()
         } else {
             if (isFailure) {
                 // Toast.show(selectedPackage.message)
@@ -209,6 +209,7 @@ mapStateToProps = (state) => {
     return {
         signup: state.signup,
         userRes: state.login,
+        getBarCode: state.getBarCode,
         selectPackage: state.selectPackage,
     }
 }

@@ -7,6 +7,8 @@ import { Header, Steps, Button, LargeTitle, MediumTitle, SmallText, QuizStaticCa
 import { WP, colors, data, appImages, family } from '../../../../services';
 import { getStylistInfo, signUpObj, createSignUp } from '../../../../store/actions';
 import { styles } from './styles';
+import { NavigationActions, StackActions } from 'react-navigation';
+
 const profile = data.member_settings_v7.en.labels.profile;
 class NoteFive extends Component {
     constructor(props) {
@@ -37,7 +39,33 @@ class NoteFive extends Component {
             ]
         }
     }
-
+    navigationToTab = (tab) => {
+        const { navigation } = this.props
+        navigation.navigate(NavigationActions.navigate({
+            routeName: 'TabStack',
+            action: NavigationActions.navigate({ routeName: tab })
+           }))
+    }
+    move=() =>{
+        const { navigation } = this.props
+        // NavigationActions.navigate({
+        //     routeName: 'TabStack',
+        //     action: NavigationActions.navigate({
+        //       routeName: 'stylist'
+        //    })
+        //   })
+        StackActions.reset({
+            index: 0,               
+            actions: [
+              NavigationActions.navigate({
+                routeName: 'TabStack',
+                action: NavigationActions.navigate({
+                  routeName: 'stylist'
+                })
+              })
+            ]
+          })
+    }
     render() {
         const { } = this.props;
         const { list } = this.state;
@@ -107,7 +135,7 @@ class NoteFive extends Component {
                             text={'Explore options'}
                             tour={true}
                             titleStyle={{  marginHorizontal: WP('7') }}
-                            onPress={()=> this.props.navigation.push('TabStack')}
+                            onPress={()=> this.navigationToTab('package')}
                             style={{ alignSelf: 'center', backgroundColor: '#D25053' }}     
                         />
                         <QuizStaticCard
@@ -115,7 +143,7 @@ class NoteFive extends Component {
                             title={'Contact Stylist'}
                             text={'Add more detail to your requests'}
                             titleStyle={{  marginHorizontal: WP('7') }}
-                            onPress={()=> this.props.navigation.push('TabStack')}
+                            onPress={()=> this.navigationToTab('stylist')}
                             style={{ alignSelf: 'center', backgroundColor: '#F48874' }}     
                         />
                         <QuizStaticCard
@@ -123,7 +151,7 @@ class NoteFive extends Component {
                             title={'Refer a Friend'}
                             text={'Get AED 100 OFF'}
                             titleStyle={{  marginHorizontal: WP('7') }}
-                            onPress={()=> this.props.navigation.push('TabStack')}
+                            onPress={()=> this.navigationToTab('referral')}
                             style={{ alignSelf: 'center', backgroundColor: '#72BFBD' }}     
                         />
                         <QuizStaticCard
@@ -131,7 +159,7 @@ class NoteFive extends Component {
                             title={'Read Blog'}
                             text={'Learn about the latest style trends'}
                             titleStyle={{  marginHorizontal: WP('7') }}
-                            onPress={()=> this.props.navigation.push('TabStack')}
+                            onPress={()=> this.navigationToTab('blogs')}
                             style={{ alignSelf: 'center', backgroundColor: '#353534' }}     
                         />
                     </ScrollView>

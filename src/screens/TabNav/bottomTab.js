@@ -57,19 +57,19 @@ export default createBottomTabNavigator(
                 title: 'My Packages'
             }
         },
-        home: {
+        stylist: {
             screen: MyStylist,
             navigationOptions: {
                 title: 'My Stylist'
             }
         },
-        new: {
+        referral: {
             screen: Referrals,
             navigationOptions: {
                 title: 'Referrals'
             }
         },
-        black: {
+        blogs: {
             screen: Blogs,
             navigationOptions: {
                 title: 'Blogs'
@@ -97,7 +97,7 @@ export default createBottomTabNavigator(
                             }
                         />
                     )
-                } else if (routeName === 'home') {
+                } else if (routeName === 'stylist') {
                     return (
                         <SvgUri
                             width={WP('5')}
@@ -111,7 +111,7 @@ export default createBottomTabNavigator(
                         />
                     )
                 }
-                else if (routeName === 'new') {
+                else if (routeName === 'referral') {
                     return (
                         <SvgUri
                             width={WP('5')}

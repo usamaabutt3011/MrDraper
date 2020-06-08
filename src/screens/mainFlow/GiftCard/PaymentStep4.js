@@ -96,6 +96,7 @@ class PaymentStep4 extends Component {
       })
         .then(response => {
             this.handlePayment()
+            this.props.userInfo.userProfile.result.has_card = true;
             console.log("--->>>> 1", response);
         })
         .catch(async(error) => {

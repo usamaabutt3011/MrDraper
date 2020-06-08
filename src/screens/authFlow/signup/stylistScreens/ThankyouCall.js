@@ -30,7 +30,8 @@ class ThankyouCall extends Component {
                 <View style={{ height: WP('10') }} />
                 <View style={styles.subContainer}>
                     <LargeTitle
-                        text={'Great! Thank you for the selection.'}
+                        // text={'Great! Thank you for the selection.'}
+                        text={'Great! Thank you for adding your card.'}
                         style={styles.title}
                     />
                     <NormalText
@@ -44,11 +45,11 @@ class ThankyouCall extends Component {
                         style={{ width: WP('72'), alignSelf: 'center', marginBottom: WP('4') }}
                         onPress={() => this.props.navigation.push('StyleQuiz')}
                     />
-                    <Button
+                    {/* <Button
                         title='HAVE PAOLA GIVE ME A CALL'
                         titleStyle={{ color: colors.mediumGrey }}
                         style={{ width: WP('72'), alignSelf: 'center', marginBottom: WP('8'), backgroundColor: colors.buttonColorLight }}
-                    />
+                    /> */}
                 </View>
             </View>
         );

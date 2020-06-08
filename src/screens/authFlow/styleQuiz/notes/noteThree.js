@@ -176,7 +176,7 @@ class NoteThree extends Component {
         }
     }
     render() {
-        const { addresses, scheduleQuiz, newAddress, userRes } = this.props;
+        const { addresses, scheduleQuiz, newAddress, signup } = this.props;
         return (
             <KeyboardAwareScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
@@ -222,7 +222,7 @@ class NoteThree extends Component {
                                             return (
                                                 <AddressCard
                                                     key={key}
-                                                    name={userRes.userProfile.result.name}
+                                                    name={signup.signupRes.result.name}
                                                     item={item}
                                                     onPress={() => this.selectAddress(item)}
                                                 />

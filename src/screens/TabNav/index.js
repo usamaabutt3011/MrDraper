@@ -30,7 +30,10 @@ class TabStack extends Component {
     return 'Discription', 'new'
   }
 
-
+  componentWillMount = () => {
+    alert('Tabs')
+    this.props.jumpTo('stylist')
+  }
   _renderLabel = ({ route }) => (
     <Text style={{ fontSize: 13, color: 'black' }}>{route.title}</Text>
   );

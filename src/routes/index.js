@@ -32,6 +32,8 @@ import AppSettings from '../screens/mainFlow/AppSettings';
 // import TabStack from '../screens/TabNav'
 import TabStack from '../screens/TabNav/bottomTab'
 
+import NoteFive from '../screens/authFlow/styleQuiz/notes/noteFive'
+
 export const drawerApp = createDrawerNavigator({
     TabStack: TabStack,
     PickupRequestStack: PickupRequestStack,
@@ -58,6 +60,7 @@ export const AppNavigator = createStackNavigator({
 //AuthStack
 export const AuthStack = createStackNavigator({
     Login: Login,
+    NoteFive: NoteFive,
     SignUp: SignUpStack,
     MyPackages: MyPackages,
     TabStack: TabStack,

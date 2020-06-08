@@ -16,7 +16,7 @@ export const StylistScreens = createStackNavigator({
     SocailLinks: { 
         screen: SocailLinks,
         navigationOptions: {
-            gesturesEnabled: false
+            // gesturesEnabled: false
     }},
     ItemsReceived: { 
         screen: ItemsReceived,

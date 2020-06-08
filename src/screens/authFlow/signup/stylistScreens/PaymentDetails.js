@@ -3,11 +3,13 @@ import { View, ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import CircleCheckIcon from 'react-native-vector-icons/AntDesign';
+import { RNPayFort, getPayFortDeviceId } from "@logisticinfotech/react-native-payfort-sdk/PayFortSDK/PayFortSDK";
 import { CustomInputField, Header, Steps, Button, LargeTitle, SmallText, VerifyingModal } from '../../../../components';
 import { WP, colors, family } from '../../../../services';
 import { signUpObj } from '../../../../store/actions';
 import { styles } from './styles';
 import { withNavigation } from 'react-navigation'
+import { AddPaymentCard } from '../../../../store/actions'
 class PaymentDetails extends Component {
     constructor(props) {
         super(props);
@@ -34,10 +36,49 @@ class PaymentDetails extends Component {
                 showSuccessModal: false, 
                 showSuccess: true 
             },()=>{
-                this.props.navigation.push('Thankyou')
+                this.props.navigation.push('ThankyouCall')
             });
           }, 3000);
         }, 3000);
+    }
+    async onPay() {
+        // await this.getDeviceToken()
+        const { userRes, getBarCode } = this.props;
+        try {
+          await RNPayFort({
+            command: "PURCHASE",
+            access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
+            merchant_identifier: "JLNmgBYq",//"492860a6",
+            merchant_reference: getBarCode.getBarcode? getBarCode.getBarcode.result.barcode : 'MRDRAPER123', 
+            sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
+            amount: 100,
+            currencyType: "AED",
+            language: "en",
+            email: userRes.userProfile.result.email,
+            testing: true
+          })
+            .then(async(response) => {
+                this.showPaymentModals()
+                let params = {
+                    user_id: userRes.userProfile.result.user_id,
+                    card_no: response.card_number,
+                    card_holder_name: response.card_holder_name,
+                    card_type: response.payment_option,
+                    token_name: response.token_name
+                }
+                await this.props.AddPaymentCardAction(params);
+                this.props.userRes.userProfile.result.has_card = true;
+                console.log("--->>>> 1", response);
+            })
+            .catch(error => {
+                if (error.response_code === '00047') {
+                    this.props.navigation.push('ThankyouCall')
+                }
+                console.log("--->>>> 2", error);
+            });
+        } catch (error) {
+          console.log('try error=========>', error);
+        }
       }
     render() {
         const { isShowPaymentModal, showSuccessModal } = this.state;
@@ -101,7 +142,7 @@ class PaymentDetails extends Component {
                                     text={`We check your card is real for AED 1 (a bit like how a hotel does)`}
                                     style={{ marginHorizontal: WP('5'), alignSelf: 'flex-start', marginBottom: WP('10') }}
                                 />
-                                <CustomInputField
+                                {/* <CustomInputField
                                     label={'Name on Card'}
                                     placeholderText={'Shumaim Awanzai'}
                                     placeholderTextColor={colors.lightGrey}
@@ -154,7 +195,12 @@ class PaymentDetails extends Component {
                                         onPress={() => this.payment()}
                                         style={{ width: WP('30'), height: WP('12') }}
                                     />
-                                </View>
+                                </View> */}
+                                 <Button
+                                        title={'ADD PAYMENT METHOD'}
+                                        onPress={() => this.onPay()}
+                                        style={{ width: WP('80'), height: WP('12'), marginBottom: WP('10') }}
+                                    />
                             </View>
                         </View>
                     </ScrollView>
@@ -169,11 +215,14 @@ class PaymentDetails extends Component {
 mapStateToProps = (state) => {
     return {
         signup: state.signup,
+        userRes: state.login,
+        getBarCode: state.getBarCode,
     }
 }
 mapDispatchToProps = dispatch => {
     return {
         signUpObjAction: (params,screen) => dispatch(signUpObj(params, screen)),
+        AddPaymentCardAction: (params) => dispatch(AddPaymentCard(params)),
     }
 }
 

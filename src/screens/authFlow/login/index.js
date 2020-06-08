@@ -76,6 +76,7 @@ class Login extends Component {
     signup = async () => {
         const { signup } = this.props;
         this.props.navigation.push('SignUp')
+        // this.props.navigation.push('SignUp')
     }
     toggleModal = () => {
         this.setState({ isModalVisible: !this.state.isModalVisible });

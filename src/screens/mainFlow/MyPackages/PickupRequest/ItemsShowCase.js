@@ -84,7 +84,7 @@ class ItemsShowCase extends Component {
         const { productFeedback, counter, alterNote, item } = this.state;
         productFeedback.push([counter-1,{
 			product_id: item.id,
-            returning: "no",
+            returning: "yes",
             reason: 'Need alteration',
             feedback: alterNote
         }])

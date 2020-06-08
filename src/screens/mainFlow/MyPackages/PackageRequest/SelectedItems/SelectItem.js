@@ -165,6 +165,12 @@ class SelectItem extends Component {
         // console.log('[SelectItem.js] SelectItem obj edited', packageRequest.packageRequestObj)
         // console.log('===========================================================================================================')
     }
+    componentWillUnmount = async() => {
+        const { PackageRequestObjAction, packageRequest } = this.props;
+        var params = packageRequest.packageRequestObj
+        params.needs = []; // local state
+        await PackageRequestObjAction(params)
+    }
     next = async() => {
         const { needs } = this.state;
         const { packageRequestObj } = this.props.packageRequest;
@@ -254,7 +260,7 @@ class SelectItem extends Component {
                             </View>
                         </View>
                         <MediumTitle
-                            text={`FootWear`}
+                            text={`Foot Wear`}
                             style={{ marginHorizontal: WP('5'), marginTop: WP('15'), marginVertical: WP('5') }}
                         />
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: WP('3') }}>

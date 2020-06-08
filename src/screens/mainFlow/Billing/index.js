@@ -89,6 +89,7 @@ class Billing extends Component {
               token_name: response.token_name
             }
             await this.props.AddPaymentCardAction(params)
+            this.props.userRes.userProfile.result.has_card = true;
           })
           .catch(error => {
             if (error.response_code === '00047') {
