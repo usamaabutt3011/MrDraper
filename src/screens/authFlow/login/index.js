@@ -30,8 +30,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: 'ulugbek_u@hotmail.com', //ulugbek_u@hotmail.com
-            password: 'mrdraper19',//mrdraper19
+            email: '', //ulugbek_u@hotmail.com
+            password: '',//mrdraper19
             showPassword: true,
             isModalVisible: false,
             first_screen: true,
@@ -202,6 +202,7 @@ class Login extends Component {
                     text={'Log In'}
                 />
                 <CustomInputField
+                    value={this.state.email}
                     label={'Email Address'}
                     isRightIcon={false}
                     isMaskedInput={false}

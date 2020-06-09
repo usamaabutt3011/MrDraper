@@ -68,7 +68,7 @@ class SurpriseMe extends Component {
                                 <NormalText
                                     text={`We know you’re a man who loves to look good when you’re out and about. That’s why you took the time to complete your style profile with us.
 
- This is what your stylist, ${stylist.isSuccess ? stylist.stylistInfo.result.stylist_name : 'Paola'}, will review to create your surprise box. All your purchases and feedback have been added to your profile and will guide Paola in creating an outfit that is certain to turn heads.`}
+ This is what your stylist, ${stylist.isSuccess ? stylist.stylistInfo.result.stylist_name : ''}, will review to create your surprise box. All your purchases and feedback have been added to your profile and will guide ${stylist.isSuccess ? stylist.stylistInfo.result.stylist_name : ''} in creating an outfit that is certain to turn heads.`}
                                     style={styles.normalText}
                                 />
                                 <Button

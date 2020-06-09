@@ -15,7 +15,7 @@ class Confirmation extends Component {
             list: [
                 {
                     number: 1,
-                    desc: `In the next few days, our courior will contact you to schedule the date/time for collection.`
+                    desc: `In the next few days, our courier will contact you to schedule the date/time for collection.`
                 },
                 {
                     number: 2,

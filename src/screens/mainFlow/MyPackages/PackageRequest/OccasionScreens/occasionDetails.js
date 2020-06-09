@@ -11,14 +11,14 @@ class OccasionDetail extends Component {
             shops: [
                 {
                     image: appImages.imageconta,
-                    title: 'Full OutFitts',
+                    title: 'Full Outfits',
                     detail: 'Receive full outfits from head to toe',
                     navigation: 'DetailCorrection'
                 },
                 {
                     image: appImages.fullOutFitts,
                     title: 'Specific Items',
-                    detail: 'Choose items you want to send',
+                    detail: 'Choose items you want to receive',
                     navigation: 'SelectItem'
                 },
             ]

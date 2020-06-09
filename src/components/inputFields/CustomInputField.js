@@ -55,7 +55,7 @@ export const CustomInputField = props => {
                             mode="date"
                             placeholder={props.placeholderText}
                             format="YYYY/MM/DD"
-                            // minDate={minDate}
+                            minDate={"1950/01/01"}
                             maxDate={maxDate}
                             showIcon={false}
                             hideText={false}

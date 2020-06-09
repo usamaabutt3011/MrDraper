@@ -92,10 +92,12 @@ class SchedulePackage extends Component {
         const { firstSlot, secondSlot, thirdSlot } = this.state;
         //Get current date
         var date = new Date(); // M-D-YYYY
-        var d = date.getDate();
+        var day = date.getDate();
+        var d = 5 + day
         var m = date.getMonth() + 1;
         var y = date.getFullYear();
         var dateString = y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+        var maxDate = (y+1) + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
         return (
             <View style={styles.container}>
                 <Header
@@ -152,6 +154,7 @@ class SchedulePackage extends Component {
                                 minDate={dateString}
                                 // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
                                 maxDate={'2022-01-01'}
+                                disabledDaysIndexes={[0, 6]}
                                 // Handler which gets executed on day press. Default = undefined
                                 onDayPress={(day) => {
                                     this.setState({

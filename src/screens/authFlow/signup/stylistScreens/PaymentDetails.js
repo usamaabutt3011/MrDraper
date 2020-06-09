@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import CircleCheckIcon from 'react-native-vector-icons/AntDesign';
 import { RNPayFort, getPayFortDeviceId } from "@logisticinfotech/react-native-payfort-sdk/PayFortSDK/PayFortSDK";
+import CountDown from 'react-native-countdown-component';
 import { CustomInputField, Header, Steps, Button, LargeTitle, SmallText, VerifyingModal } from '../../../../components';
 import { WP, colors, family } from '../../../../services';
 import { signUpObj } from '../../../../store/actions';
@@ -27,59 +28,59 @@ class PaymentDetails extends Component {
     }
     showPaymentModals = async () => {
         this.setState({ isShowPaymentModal: true })
-    
+
         setTimeout(() => {
-          this.setState({ showSuccessModal: true })
-          setTimeout(() => {
-            this.setState({ 
-                isShowPaymentModal: false, 
-                showSuccessModal: false, 
-                showSuccess: true 
-            },()=>{
-                this.props.navigation.push('ThankyouCall')
-            });
-          }, 3000);
+            this.setState({ showSuccessModal: true })
+            setTimeout(() => {
+                this.setState({
+                    isShowPaymentModal: false,
+                    showSuccessModal: false,
+                    showSuccess: true
+                }, () => {
+                    this.props.navigation.push('ThankyouCall')
+                });
+            }, 3000);
         }, 3000);
     }
     async onPay() {
         // await this.getDeviceToken()
         const { userRes, getBarCode } = this.props;
         try {
-          await RNPayFort({
-            command: "PURCHASE",
-            access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
-            merchant_identifier: "JLNmgBYq",//"492860a6",
-            merchant_reference: getBarCode.getBarcode? getBarCode.getBarcode.result.barcode : 'MRDRAPER123', 
-            sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
-            amount: 100,
-            currencyType: "AED",
-            language: "en",
-            email: userRes.userProfile.result.email,
-            testing: true
-          })
-            .then(async(response) => {
-                this.showPaymentModals()
-                let params = {
-                    user_id: userRes.userProfile.result.user_id,
-                    card_no: response.card_number,
-                    card_holder_name: response.card_holder_name,
-                    card_type: response.payment_option,
-                    token_name: response.token_name
-                }
-                await this.props.AddPaymentCardAction(params);
-                this.props.userRes.userProfile.result.has_card = true;
-                console.log("--->>>> 1", response);
+            await RNPayFort({
+                command: "PURCHASE",
+                access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
+                merchant_identifier: "JLNmgBYq",//"492860a6",
+                merchant_reference: getBarCode.getBarcode ? getBarCode.getBarcode.result.barcode : 'MRDRAPER123',
+                sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
+                amount: 100,
+                currencyType: "AED",
+                language: "en",
+                email: userRes.userProfile.result.email,
+                testing: true
             })
-            .catch(error => {
-                if (error.response_code === '00047') {
-                    this.props.navigation.push('ThankyouCall')
-                }
-                console.log("--->>>> 2", error);
-            });
+                .then(async (response) => {
+                    this.showPaymentModals()
+                    let params = {
+                        user_id: userRes.userProfile.result.user_id,
+                        card_no: response.card_number,
+                        card_holder_name: response.card_holder_name,
+                        card_type: response.payment_option,
+                        token_name: response.token_name
+                    }
+                    await this.props.AddPaymentCardAction(params);
+                    this.props.userRes.userProfile.result.has_card = true;
+                    console.log("--->>>> 1", response);
+                })
+                .catch(error => {
+                    if (error.response_code === '00047') {
+                        this.props.navigation.push('ThankyouCall')
+                    }
+                    console.log("--->>>> 2", error);
+                });
         } catch (error) {
-          console.log('try error=========>', error);
+            console.log('try error=========>', error);
         }
-      }
+    }
     render() {
         const { isShowPaymentModal, showSuccessModal } = this.state;
         return (
@@ -111,13 +112,28 @@ class PaymentDetails extends Component {
                                     text={`Great! One Last Step`}
                                     style={{ fontSize: WP(11), marginHorizontal: WP('5'), marginVertical: WP('5') }}
                                 />
-                                <Text style={{ marginHorizontal: WP('5'), alignSelf: 'flex-start', marginBottom: WP('4'), fontFamily: family.boldText, color: colors.drakBlack, fontSize: WP('3.5') }}>
-                                    Save a card to your profile in the next 
-                                    <Text style={{ color: colors.red }}> 24:20 </Text>
-                                    minutes & get 
-                                    <Text style={{ color: colors.buttonColor }}> 15% OFF </Text>
-                                    your first box!
-                                </Text>
+                                <View style={{ flexDirection: 'row', width: WP('80'), flexWrap: 'wrap', marginBottom: WP('4') }}>
+                                    <Text style={{ fontFamily: family.boldText, color: colors.drakBlack, fontSize: WP('3.5') }}>
+                                        Save a card to your profile in the next
+                                    </Text>
+                                    <CountDown
+                                        until={60 * 30}
+                                        onFinish={() => this.props.navigation.push('TabStack')}
+                                        digitStyle={{}}
+                                        digitTxtStyle={{ color: colors.red, fontSize: 12, top: 0 }}
+                                        timeToShow={['M', 'S']}
+                                        timeLabels={{ m: '', s: '' }}
+                                        size={8}
+                                        showSeparator={true}
+                                        style={{ height: 20, marginHorizontal: WP('1') }}
+                                    />
+                                    <Text style={{ fontFamily: family.boldText, color: colors.drakBlack, fontSize: WP('3.5') }}>
+                                        minutes & get
+                                        <Text style={{ color: colors.buttonColor }}> 15% OFF </Text>
+                                        your first box!
+                                    </Text>
+                                </View>
+
                                 <View style={{ width: WP('80'), marginBottom: WP('4') }}>
                                     {
                                         this.state.headLine.map((item, key) => {
@@ -196,15 +212,15 @@ class PaymentDetails extends Component {
                                         style={{ width: WP('30'), height: WP('12') }}
                                     />
                                 </View> */}
-                                 <Button
-                                        title={'ADD PAYMENT METHOD'}
-                                        onPress={() => this.onPay()}
-                                        style={{ width: WP('80'), height: WP('12'), marginBottom: WP('10') }}
-                                    />
+                                <Button
+                                    title={'ADD PAYMENT METHOD'}
+                                    onPress={() => this.onPay()}
+                                    style={{ width: WP('80'), height: WP('12'), marginBottom: WP('10') }}
+                                />
                             </View>
                         </View>
                     </ScrollView>
-                <VerifyingModal showModal={isShowPaymentModal} isSuccess={showSuccessModal} />
+                    <VerifyingModal showModal={isShowPaymentModal} isSuccess={showSuccessModal} />
                 </View>
             </KeyboardAwareScrollView>
         );
@@ -221,7 +237,7 @@ mapStateToProps = (state) => {
 }
 mapDispatchToProps = dispatch => {
     return {
-        signUpObjAction: (params,screen) => dispatch(signUpObj(params, screen)),
+        signUpObjAction: (params, screen) => dispatch(signUpObj(params, screen)),
         AddPaymentCardAction: (params) => dispatch(AddPaymentCard(params)),
     }
 }

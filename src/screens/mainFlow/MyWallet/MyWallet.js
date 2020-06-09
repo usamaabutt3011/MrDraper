@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Keyboard, Clipboard, Linking, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { Avatar } from 'react-native-elements';
+import Modal from 'react-native-modal';
 import Toast from 'react-native-simple-toast';
 import { Header, Button, Loader, MediumTitle, LargeTitle, SmallText, CustomInputField } from '../../../components';
 import { WP, colors, appImages, data, family, dynamicBaseURL } from '../../../services';
@@ -16,39 +17,52 @@ class MyWallet extends Component {
         this.state = {
             loading: false,
             barcode: '',
+            m_barcode: '',
+            isRedeem: false,
         }
     }
     componentWillMount = async () => {
         console.log('[MyWallet.js] componentWillMount', this.props);
+        const { userInfo } = this.props;
+        this.getWallet()
+        let parameter = {
+            user_id: userInfo.userProfile.result.user_id,
+        }
+        await this.props.getBarCodeAction(parameter, 'billing');
+    }
+    getWallet = async() => {
         const { userInfo, walletDetailAction } = this.props;
         let params = {
             user_id: userInfo.userProfile.result.user_id
         }
         await walletDetailAction(params)
-        let parameter = {
-            user_id: userInfo.userProfile.result.user_id,
-        }
-        await this.props.getBarCodeAction(parameter, 'billing');
     }
     componentWillReceiveProps = async (props) => {
         const { walletDetails, getVoucherCode, getMembershipVoucherCode } = props;
         console.log('[MyWallet.js] componentWillReceiveProps', props);
         //Claim voucher code
         if (getVoucherCode.isFailure) {
-            props.getVoucherCode.isFailure = false
+            props.getVoucherCode.isFailure = false;
             Toast.show(getVoucherCode.error.errors.message)
         } else {
             if (getVoucherCode.isSuccess) {
-                getVoucherCode.isSuccess = false
+                getVoucherCode.isSuccess = false;
+                this.getWallet()
+                this.setState({barcode: ''})
                 Toast.show(getVoucherCode.getVoucherCodeRes.user.result.message)
             }
         }
 
         if (getMembershipVoucherCode.isFailure) {
-            props.getMembershipVoucherCode.isFailure = false
+            props.getMembershipVoucherCode.isFailure = false;
+            // this._toggleRedeem()
             Toast.show(getMembershipVoucherCode.error.errors.message)
         } else if (getMembershipVoucherCode.isSuccess) {
-            getMembershipVoucherCode.isSuccess = false
+            getMembershipVoucherCode.isSuccess = false;
+            this.setState({ 
+                m_barcode: '' 
+            })
+            this._toggleRedeem()
             Toast.show(getMembershipVoucherCode.getMembershipVoucherRes.user.result.message)
         }
     }
@@ -83,19 +97,10 @@ class MyWallet extends Component {
     makeWhatsppMsg(phoneNum) {
         let url = 'whatsapp://send?text=' + `&phone=${phoneNum.substring(1)}`;
         Linking.openURL(url).then((data) => {
-            console.log('WhatsApp Opened');
+            // console.log('WhatsApp Opened');
         }).catch(() => {
             alert('Make sure Whatsapp installed on your device');
         });
-        // Linking.canOpenURL(`whatsapp://send?phone=${phoneNum}`)
-        //     .then((supported) => {
-        //         if (!supported) {
-        //             console.log("Can't handle url: " + `whatsapp://send?phone=${phoneNum}`);
-        //         } else {
-        //             return Linking.openURL(`whatsapp://send?phone=${phoneNum}`);
-        //         }
-        //     })
-        //     .catch((err) => console.error('An error occurred', err));
     }
     getVoucherRequest = async () => {
         const { barcode } = this.state;
@@ -112,17 +117,19 @@ class MyWallet extends Component {
     }
 
     redeemMembershipRequest = async () => {
-        const { barcode } = this.state;
+        const { m_barcode } = this.state;
         const { getRedeemMembershipVoucherAction, userInfo, getBarCode } = this.props;
         let params = {
             user_id: userInfo.userProfile.result.user_id,
-            barcode: getBarCode.getBarcode ? getBarCode.getBarcode.result.barcode : 'MRDRAPER123'
+            barcode: m_barcode
         }
 
         await getRedeemMembershipVoucherAction(params)
-
     }
+    _toggleRedeem = () => 
+        this.setState({ isRedeem: !this.state.isRedeem })
     render() {
+        const { isRedeem } = this.state;
         const { walletDetails, userInfo, getVoucherCode, getMembershipVoucherCode } = this.props;
         let shareOptions = {
             title: "MrDraper",
@@ -276,18 +283,14 @@ class MyWallet extends Component {
                                         </View>
                                         :
                                         <TouchableOpacity
-                                            onPress={() => this.redeemMembershipRequest()}>
+                                            onPress={() =>{ 
+                                                this._toggleRedeem()
+                                            }}>
 
                                             <MediumTitle
                                                 text={'REDEEM MEMBERSHIP'}
                                                 style={{ marginHorizontal: WP('5'), marginBottom: WP('10'), fontFamily: family.boldText, fontSize: WP('4'), color: colors.mediumGrey }}
                                             />
-                                            {/* <Button
-                                            title={'REDEEM MEMBERSHIP'}
-                                            showLoader={getMembershipVoucherCode.loading}
-                                            onPress={() => this.redeemMembershipRequest()}
-                                            style={{ width: WP(50), paddingTop: 0, marginTop: 0, backgroundColor: colors.blackTransparent, }}
-                                        /> */}
                                         </TouchableOpacity>
                                     }
                                     <TouchableOpacity
@@ -298,6 +301,49 @@ class MyWallet extends Component {
                                         />
                                     </TouchableOpacity>
                                 </View>
+                                <Modal
+                                    animationInTiming={200}
+                                    animationOutTiming={100}
+                                    animationIn="slideInLeft"
+                                    animationOut="slideOutRight"
+                                    avoidKeyboard={true}
+                                    transparent={true}
+                                    isVisible={isRedeem}
+                                    onBackdropPress={() => this._toggleRedeem()}
+                                    style={{ flex: 1, justifyContent: 'center' }}
+                                    >
+                                    <View style={styles.subContainerPersonal}>
+                                    <MediumTitle
+                                        text={'Got a Voucher Code?'}
+                                        style={{ marginHorizontal: WP('5'), marginTop: WP('5') }}
+                                    />
+                                    <SmallText
+                                        text={`Enter the voucher code below to redeem your membership.`}
+                                        style={{ marginHorizontal: WP('5'), fontSize: WP('4'), marginTop: WP('3'), color: colors.black }}
+                                    />
+                                    <CustomInputField
+                                        label={'Voucher Code'}
+                                        value={this.state.m_barcode}
+                                        isRightIcon={false}
+                                        isMaskedInput={false}
+                                        secureTextEntry={false}
+                                        placeholderText={'MRDRAPER777'}
+                                        placeholderTextColor={colors.lightGrey}
+                                        keyboardType={'default'}
+                                        onChangeText={(text) => this.setState({ m_barcode: text })}
+                                        containerStyle={{ marginHorizontal: WP('5'), marginTop: WP('10'), marginBottom: 5 }}
+                                        style={{ paddingHorizontal: WP(1) }}
+                                    />
+                                    <View style={{ width: WP('80'), alignItems: 'flex-end', marginHorizontal: WP('5') }}>
+                                        <Button
+                                            title={'REDEEM VOUCHER'}
+                                            showLoader={getVoucherCode.loading}
+                                            onPress={() => this.redeemMembershipRequest()}
+                                            style={{ backgroundColor: colors.buttonColor, alignSelf: 'center', width: WP('44'), marginVertical: WP('5') }}
+                                        />
+                                    </View>
+                                </View>
+                                </Modal>
                             </ScrollView>
                     }
                 </View>
