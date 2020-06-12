@@ -5,10 +5,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Edit from 'react-native-vector-icons/FontAwesome';
 import { CustomInputField, Header, Button, LargeTitle, NormalText } from '../../../components';
 import { WP, colors, family, appImages, HP } from '../../../services';
-import { AddPaymentCard, getPaymentDetails, getBarCode } from '../../../store/actions';
+import { AddPaymentCard, getPaymentDetails, getBarCode, getPayFortToken } from '../../../store/actions';
 import Toast from 'react-native-simple-toast';
 import { RNPayFort, getPayFortDeviceId } from "@logisticinfotech/react-native-payfort-sdk/PayFortSDK/PayFortSDK";
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { NetworkInfo } from "react-native-network-info";
 
 class Billing extends Component {
   constructor(props) {
@@ -16,17 +16,29 @@ class Billing extends Component {
     this.state = {
       isCustom: false,
       selectedValue: '',
-      customValue: ''
+      customValue: '',
+      sdkToken: '',
+      ipAddress: ''
     }
   }
 
   componentDidMount = async () => {
-    const { userRes } = this.props;
+    // require module
+    // Get Local IP
+    NetworkInfo.getIPAddress().then(ipAddress => {
+      this.setState({ 
+        ipAddress: ipAddress
+       })
+      console.log('IP Address====------------:',ipAddress);
+    });
+
+    const { userRes, getPayFortTokenAction } = this.props;
     let params = {
       user_id: userRes.userProfile.result.user_id,
     }
     await this.getPaymentDetails();
     await this.props.getBarCodeAction(params, 'billing');
+    await this.props.getPayFortTokenAction()
   }
 
   getPaymentDetails = async () => {
@@ -43,10 +55,13 @@ class Billing extends Component {
       nextProps.billing.isSuccess = false;
       await this.getPaymentDetails()
       Toast.show('Thanks, Your billing has added successfully.')
-    } else {
-
+    } 
+    if (nextProps.payfortToken.isSuccess && nextProps.payfortToken.payfortToken) {
+      const { payfortToken } = nextProps.payfortToken
+      nextProps.payfortToken.isSuccess = false;
+      this.setState({ sdkToken: payfortToken.sdk_token })
     }
-    console.log('===componentWillReceiveProps billings: ', nextProps.billing);
+    // console.log('===componentWillReceiveProps billings: ', nextProps.billing);
     console.log('===componentWillReceiveProps billings: ', nextProps);
   }
 
@@ -61,22 +76,25 @@ class Billing extends Component {
       />
     );
   }
-
+  
   AddCard = async () => {
     const { userRes, getBarCode } = this.props;
     if (userRes.userProfile.isSuccess) {
       try {
         await RNPayFort({
-          command: "AUTHORIZATION",
-          access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
-          merchant_identifier: "JLNmgBYq",//"492860a6",
-          sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
+          command: "AUTHORIZATION",//"AUTHORIZATION",//"PURCHASE",TOKENIZATION
+          access_code: "SDml7I01zNJCFuh66dAJ",//"AAxmojOBICnfd3acwhNI",//"SDml7I01zNJCFuh66dAJ",
+          merchant_identifier: "JLNmgBYq",//"UbjSuMqG",//"JLNmgBYq",
+          sha_request_phrase: "TESTSHAOUT",//"DRAPERIN17",//"TESTSHAOUT",
           merchant_reference: getBarCode.getBarcode ? getBarCode.getBarcode.result.barcode : 'MRDRAPER123',
-          amount: 1 * 100,
+          amount: 100 * 100,
           currencyType: "AED",
           language: "en",
-          email: userRes.userProfile.result.email,
-          testing: true
+          customer_ip: this.state.ipAddress,
+          // email: userRes.userProfile.result.email,
+          email: "usama.asghar@phaedrasolutions.com",
+          testing: false,
+          // sdk_token: this.state.sdkToken
         })
           .then(async response => {
             console.log("--->>>> then", response);
@@ -203,6 +221,7 @@ mapStateToProps = (state) => {
   return {
     userRes: state.login,
     billing: state.billing,
+    payfortToken: state.getToken,
     getBarCode: state.getBarCode,
     billingDetail: state.billingDetail,
   }
@@ -210,6 +229,7 @@ mapStateToProps = (state) => {
 mapDispatchToProps = dispatch => {
   return {
     AddPaymentCardAction: (params) => dispatch(AddPaymentCard(params)),
+    getPayFortTokenAction: () => dispatch(getPayFortToken()),
     getPaymentDetailsAction: (params) => dispatch(getPaymentDetails(params)),
     getBarCodeAction: (params, called) => dispatch(getBarCode(params, called)),
   }

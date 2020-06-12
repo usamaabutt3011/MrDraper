@@ -317,6 +317,8 @@ PODS:
     - React
   - react-native-netinfo (5.8.0):
     - React
+  - react-native-network-info (5.2.1):
+    - React
   - react-native-payfort-sdk (1.0.14):
     - React
   - react-native-simple-toast (1.1.2):
@@ -455,6 +457,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-network-info (from `../node_modules/react-native-network-info`)
   - "react-native-payfort-sdk (from `../node_modules/@logisticinfotech/react-native-payfort-sdk`)"
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -548,6 +551,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-network-info:
+    :path: "../node_modules/react-native-network-info"
   react-native-payfort-sdk:
     :path: "../node_modules/@logisticinfotech/react-native-payfort-sdk"
   react-native-simple-toast:
@@ -645,6 +650,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
   react-native-netinfo: 6458a467af4b3b7b0b87a179776ba6ba469e4f22
+  react-native-network-info: d1290ffc0bd0709e11436f5b8d7f605dcc5c4530
   react-native-payfort-sdk: fd0f15b5c8464ba329ec787832536e7e76c46f2d
   react-native-simple-toast: a3a8e9033a549c11741debe875e54698cc4c0dd7
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865

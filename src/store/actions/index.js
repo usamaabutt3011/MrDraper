@@ -91,3 +91,6 @@ export {
     AddPaymentCard,
     getPaymentDetails
 } from './billing-actions/billing-actions';
+export {
+    getPayFortToken
+} from './get-payfort-token-action.js';

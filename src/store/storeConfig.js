@@ -59,17 +59,20 @@ import settingReducer from './reducers/setting-reducer/setting-reducer';
 //****************** Add Payment Cards in Billing ******************//
 import billingReducer from './reducers/billing-reducers/billing-reducers';
 import billingDetailReducer from './reducers/billing-reducers/billing-detail-reducer';
+//****************** PayFort Token**********************************//
+import getTokenReducer from './reducers/get-payfort-token-reducer.js'
 
 const rootReducer = combineReducers({
     login: loginReducer,
     styleQuiz: styleQuiz,
     signup: signUpReducer,
+    getToken: getTokenReducer,
     giftCard: giftCardReducer,
-    getBarCode: getBarCodeReducer,
     scheduleQuiz: scheduleQuiz,
     stylistInfo: getStylistInfo,
     addressesList: addressesList,
     megicLogin: megicLoginReducer,
+    getBarCode: getBarCodeReducer,
     settingReducer: settingReducer,
     socialLinks: socialLinkReducer,
     areaListReducer: areaListReducer,
@@ -107,6 +110,7 @@ const persistConfig = {
         // 'login',
         // 'signup',
         'billing',
+        'getToken',
         'styleQuiz',
         'megicLogin',
         'getBarCode',

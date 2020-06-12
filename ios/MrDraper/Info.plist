@@ -12,6 +12,9 @@
   <key>NSMicrophoneUsageDescription</key>
   <string>MrDraper would like to use your microphone (for videos)</string>
   
+  <key>UIUserInterfaceStyle</key>
+  <string>Light</string>
+  
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

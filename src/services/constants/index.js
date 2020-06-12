@@ -1,4 +1,7 @@
-export const stagingServer = "http://stagingwebsite.mrdraper.com/api/v1/users/"
+// export const stagingServer = "http://stagingwebsite.mrdraper.com/api/v1/users/"
+export const stagingServer = "https://www.mrdraper.com/api/v1/users/";
+export const productionServer = "https://www.mrdraper.com";
+
 export const ngrokServer = "http://0733cadf.ngrok.io/api/v1/users/"
 export const stagingURL = "http://stagingwebsite.mrdraper.com/"
 export const productionURL = "https://www.mrdraper.com/"
@@ -42,5 +45,6 @@ export const endPoints = {
     updateGiftCard: 'update_gc_details',
     registerGiftCard: 'register_gift_card',
     saveCard: 'save_card_token',
-    getCardDetails: 'get_card_details'
+    getCardDetails: 'get_card_details',
+    sdkToken: 'https://www.mrdraper.com/api/v1/sdk/generate_sdk_token',
 }

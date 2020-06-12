@@ -47,16 +47,17 @@ class PaymentDetails extends Component {
         const { userRes, getBarCode } = this.props;
         try {
             await RNPayFort({
-                command: "PURCHASE",
-                access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
-                merchant_identifier: "JLNmgBYq",//"492860a6",
+                command: "PURCHASE",//"AUTHORIZATION",//"PURCHASE",TOKENIZATION
+                access_code: "AAxmojOBICnfd3acwhNI",//"SDml7I01zNJCFuh66dAJ",
+                merchant_identifier: "UbjSuMqG",//"JLNmgBYq",
                 merchant_reference: getBarCode.getBarcode ? getBarCode.getBarcode.result.barcode : 'MRDRAPER123',
-                sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
+                sha_request_phrase: "DRAPERIN17",//"TESTSHAOUT",
                 amount: 100,
                 currencyType: "AED",
                 language: "en",
                 email: userRes.userProfile.result.email,
-                testing: true
+                // sdk_token: "",
+                testing: false
             })
                 .then(async (response) => {
                     this.showPaymentModals()
@@ -112,7 +113,7 @@ class PaymentDetails extends Component {
                                     text={`Great! One Last Step`}
                                     style={{ fontSize: WP(11), marginHorizontal: WP('5'), marginVertical: WP('5') }}
                                 />
-                                <View style={{ flexDirection: 'row', width: WP('80'), flexWrap: 'wrap', marginBottom: WP('4') }}>
+                                <View style={{ flexDirection: 'row', width: WP('80'), flexWrap: 'wrap', alignItems: 'center' }}>
                                     <Text style={{ fontFamily: family.boldText, color: colors.drakBlack, fontSize: WP('3.5') }}>
                                         Save a card to your profile in the next
                                     </Text>
@@ -125,15 +126,14 @@ class PaymentDetails extends Component {
                                         timeLabels={{ m: '', s: '' }}
                                         size={8}
                                         showSeparator={true}
-                                        style={{ height: 20, marginHorizontal: WP('1') }}
+                                        style={{ marginHorizontal: WP('1') }}
                                     />
-                                    <Text style={{ fontFamily: family.boldText, color: colors.drakBlack, fontSize: WP('3.5') }}>
-                                        minutes & get
-                                        <Text style={{ color: colors.buttonColor }}> 15% OFF </Text>
-                                        your first box!
-                                    </Text>
                                 </View>
-
+                                <Text style={{ fontFamily: family.boldText, color: colors.drakBlack, fontSize: WP('3.5'), alignSelf: 'flex-start', marginHorizontal: WP('5'), marginBottom: WP('4') }}>
+                                    minutes & get
+                                    <Text style={{ color: colors.buttonColor }}> 15% OFF </Text>
+                                    your first box!
+                                </Text>
                                 <View style={{ width: WP('80'), marginBottom: WP('4') }}>
                                     {
                                         this.state.headLine.map((item, key) => {

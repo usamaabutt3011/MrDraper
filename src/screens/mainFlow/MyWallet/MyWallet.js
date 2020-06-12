@@ -314,15 +314,15 @@ class MyWallet extends Component {
                                     >
                                     <View style={styles.subContainerPersonal}>
                                     <MediumTitle
-                                        text={'Got a Voucher Code?'}
+                                        text={'Got a Membership Code?'}
                                         style={{ marginHorizontal: WP('5'), marginTop: WP('5') }}
                                     />
                                     <SmallText
-                                        text={`Enter the voucher code below to redeem your membership.`}
+                                        text={`Enter the code below to redeem your membership.`}
                                         style={{ marginHorizontal: WP('5'), fontSize: WP('4'), marginTop: WP('3'), color: colors.black }}
                                     />
                                     <CustomInputField
-                                        label={'Voucher Code'}
+                                        label={'Membership Code'}
                                         value={this.state.m_barcode}
                                         isRightIcon={false}
                                         isMaskedInput={false}
@@ -336,7 +336,7 @@ class MyWallet extends Component {
                                     />
                                     <View style={{ width: WP('80'), alignItems: 'flex-end', marginHorizontal: WP('5') }}>
                                         <Button
-                                            title={'REDEEM VOUCHER'}
+                                            title={'REDEEM Membership'}
                                             showLoader={getVoucherCode.loading}
                                             onPress={() => this.redeemMembershipRequest()}
                                             style={{ backgroundColor: colors.buttonColor, alignSelf: 'center', width: WP('44'), marginVertical: WP('5') }}
