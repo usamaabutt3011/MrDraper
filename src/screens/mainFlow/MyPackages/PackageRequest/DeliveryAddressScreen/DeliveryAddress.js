@@ -112,7 +112,10 @@ class DeliveryAddress extends Component {
         addresses.addressList.result.forEach(async item => {
             if (item.id == value.id) {
                 item.checked = true;
-                this.setState({ selectedAddress: item.area, selectedAddObj: item })
+                this.setState({
+                    selectedAddress: `${item.line_1}, ${item.line_2}, ${item.area}, ${item.city}`,
+                    selectedAddObj: item
+                })
             } else {
                 item.checked = false;
             }

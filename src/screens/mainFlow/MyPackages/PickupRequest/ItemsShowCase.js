@@ -47,27 +47,27 @@ class ItemsShowCase extends Component {
         const { productFeedback } = this.state;
         const { counter } = this.state;
         if (counter < packageDetail.packageDetailRes.result.products.length) {
-            this.setState({ 
+            this.setState({
                 item: packageDetail.packageDetailRes.result.products[counter],
                 counter: counter + 1,
-             })
+            })
         } else {
-            this.props.navigation.push('Summary',{ productFeedback })
+            this.props.navigation.push('Summary', { productFeedback })
         }
     }
-    keeping = async() => {
+    keeping = async () => {
         const { counter, productFeedback, item } = this.state;
-        productFeedback.push([counter-1,{
+        productFeedback.push([counter - 1, {
             product_id: item.id,
             returning: "no"
         }])
         await this.selectItem()
         // console.log('[ItemsShowCase.js] differentSizes', productFeedback);
     }
-    differentSizes = async(label) => {
+    differentSizes = async (label) => {
         const { productFeedback, counter, sizeNote, item } = this.state;
-        productFeedback.push([counter-1,{
-			product_id: item.id,
+        productFeedback.push([counter - 1, {
+            product_id: item.id,
             returning: "yes",
             reason: label ? label : 'Other',
             feedback: sizeNote
@@ -76,14 +76,14 @@ class ItemsShowCase extends Component {
             Toast.show('Please select an option or write a note.')
         } else {
             await this.selectItem()
-            this._differentSizeToggle()     
-        }      
+            this._differentSizeToggle()
+        }
         // console.log('[ItemsShowCase.js] differentSizes', productFeedback);
     }
-    alterItem = async() => {
+    alterItem = async () => {
         const { productFeedback, counter, alterNote, item } = this.state;
-        productFeedback.push([counter-1,{
-			product_id: item.id,
+        productFeedback.push([counter - 1, {
+            product_id: item.id,
             returning: "yes",
             reason: 'Need alteration',
             feedback: alterNote
@@ -92,14 +92,14 @@ class ItemsShowCase extends Component {
             Toast.show('Please tell us what you needs alterations.')
         } else {
             await this.selectItem()
-            this._alterToggle()   
-        }        
+            this._alterToggle()
+        }
         // console.log('[ItemsShowCase.js] alterItem', productFeedback);
     }
-    returnItem = async(label) => {
+    returnItem = async (label) => {
         const { productFeedback, counter, returnNote, item } = this.state;
-        productFeedback.push([counter-1,{
-			product_id: item.id,
+        productFeedback.push([counter - 1, {
+            product_id: item.id,
             returning: "yes",
             reason: label ? label : 'Other',
             feedback: returnNote
@@ -108,8 +108,8 @@ class ItemsShowCase extends Component {
             Toast.show('Please select an option or write a note.')
         } else {
             await this.selectItem()
-            this._returnToggle()  
-        }      
+            this._returnToggle()
+        }
         // console.log('[ItemsShowCase.js] returnItem', productFeedback);
     }
     render() {
@@ -132,7 +132,8 @@ class ItemsShowCase extends Component {
                             <View style={styles.subContainer}>
                                 <Image
                                     // loadingIndicatorSource={<Loader />}
-                                    source={{ uri: `https://mrdraper-inventory.s3.eu-central-1.amazonaws.com${item.image}`}}
+                                    // source={{ uri: `https://mrdraper-inventory.s3.eu-central-1.amazonaws.com${item.image}` }}
+                                    source={{ uri: item.image }}
                                     style={{ height: WP('90'), width: WP('90'), resizeMode: 'cover' }}
                                 />
                                 <NormalText
@@ -164,7 +165,7 @@ class ItemsShowCase extends Component {
                     <Button
                         title={`I’m keeping this!`}
                         onPress={() => this.keeping()}
-                        style={[styles.selectedButton,{ backgroundColor: colors.buttonColor }]}
+                        style={[styles.selectedButton, { backgroundColor: colors.buttonColor }]}
                     />
                     <Button
                         title={`I need a different size`}
@@ -184,20 +185,20 @@ class ItemsShowCase extends Component {
                     <DifferentSize
                         isDifferent={this.state.isDifferent}
                         _differentSizeToggle={() => this._differentSizeToggle}
-                        onPress={(label)=> this.differentSizes(label)}
-                        onChangeText={(text)=> this.setState({ sizeNote: text })}
+                        onPress={(label) => this.differentSizes(label)}
+                        onChangeText={(text) => this.setState({ sizeNote: text })}
                     />
                     <Alternative
                         isAlter={this.state.isAlter}
                         _alterToggle={() => this._alterToggle}
-                        onPress={()=> this.alterItem()}
-                        onChangeText={(text)=> this.setState({ alterNote: text })}
+                        onPress={() => this.alterItem()}
+                        onChangeText={(text) => this.setState({ alterNote: text })}
                     />
                     <Return
                         isReturn={this.state.isReturn}
-                        onPress={(label)=> this.returnItem(label)}
+                        onPress={(label) => this.returnItem(label)}
                         _returnToggle={() => this._returnToggle}
-                        onChangeText={(text)=> this.setState({ returnNote: text })}
+                        onChangeText={(text) => this.setState({ returnNote: text })}
                     />
                 </ScrollView>
             </View>

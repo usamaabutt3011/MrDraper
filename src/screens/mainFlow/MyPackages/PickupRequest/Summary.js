@@ -16,30 +16,30 @@ class Summary extends Component {
         }
     }
 
-    componentWillMount = async() => {
+    componentWillMount = async () => {
         const { packageDetail } = this.props;
         let { params } = this.props.navigation.state;
         console.log('[Summary.js] componentWillMount Props: ', packageDetail.packageDetailRes.result.products, params.productFeedback);
         params.productFeedback.forEach(item => {
-            packageDetail.packageDetailRes.result.products.forEach( obj => {
+            packageDetail.packageDetailRes.result.products.forEach(obj => {
                 if (item[1].product_id == obj.id) {
                     if (item[1].returning == "no") {
                         obj.return = false;
                         if (item[1].reason == "Need alteration") {
-                            obj.reason = item[1].reason                            
+                            obj.reason = item[1].reason
                         }
                     } else {
-                        obj.return = true;   
+                        obj.return = true;
                         obj.reason = item[1].reason
                     }
-                } 
+                }
             })
         });
         // console.log('[Summary.js] componentWillMount After modify: ', packageDetail.packageDetailRes.result.products);
     }
     submitPickup = async () => {
         const { packageDetail, pickUpRequestAction } = this.props;
-        let { params } = this.props.navigation.state; 
+        let { params } = this.props.navigation.state;
         let param = {
             package_id: packageDetail.packageDetailRes.result.package.package_id,
             product_feedback: params.productFeedback,
@@ -48,7 +48,7 @@ class Summary extends Component {
         console.log('[Summary.js] submitPickup: ', param);
         await pickUpRequestAction(param)
     }
-    componentWillReceiveProps = async(props) => {
+    componentWillReceiveProps = async (props) => {
         const { pickUpRequest } = props;
         console.log('[Summary.js] componentWillReceiveProps props', pickUpRequest);
         if (pickUpRequest.isSuccess) {
@@ -56,8 +56,8 @@ class Summary extends Component {
             this.props.navigation.push('Confirmation')
         } else {
             if (pickUpRequest.isFailure) {
-                // Toast.show('done')
-            }     
+                Toast.show(pickUpRequest.error.message)
+            }
         }
     }
 
@@ -109,13 +109,13 @@ class Summary extends Component {
                             <Button
                                 title={`REDO`}
                                 titleStyle={{ color: colors.mediumGrey }}
-                                onPress={()=> this.props.navigation.navigate('Intro')}
+                                onPress={() => this.props.navigation.navigate('Intro')}
                                 style={{ width: WP('20'), backgroundColor: colors.bgColor }}
                             />
                             <Button
                                 title={`CONFIRM PICKUP`}
                                 showLoader={pickUpRequest.loading}
-                                onPress={()=> this.submitPickup()}
+                                onPress={() => this.submitPickup()}
                                 style={{ width: WP('45') }}
                             />
                         </View>
@@ -130,7 +130,7 @@ class Summary extends Component {
             <View key={key} style={{ marginBottom: WP('5'), alignSelf: 'center' }}>
                 <View style={{ height: WP('20'), width: WP('80'), alignItems: 'center', flexDirection: 'row', alignSelf: 'center' }}>
                     <Image
-                        source={{ uri: `https://mrdraper-inventory.s3.eu-central-1.amazonaws.com${item.image}`}}
+                        source={{ uri: item.image }}
                         style={{ height: WP('15'), width: WP('15'), marginHorizontal: WP('2') }}
                     />
                     <View style={{ justifyContent: 'center', width: WP('40') }}>
@@ -157,16 +157,16 @@ class Summary extends Component {
                         <NormalText
                             text={item.return ? item.reason : `Keeping`}
                             text={
-                                item.return ? 
+                                item.return ?
                                     item.reason
                                     :
-                                    item.reason == 'Need alteration' ?  
+                                    item.reason == 'Need alteration' ?
                                         'Alteration'
-                                        : 
+                                        :
                                         `Keeping`
-                                }
+                            }
                             style={{ fontFamily: family.boldText, color: item.return ? colors.orange : colors.buttonColor, fontSize: WP('3'), textAlign: 'right' }}
-                            // style={{ fontFamily: family.boldText, color: colors.buttonColor }}
+                        // style={{ fontFamily: family.boldText, color: colors.buttonColor }}
                         />
                     </View>
                 </View>

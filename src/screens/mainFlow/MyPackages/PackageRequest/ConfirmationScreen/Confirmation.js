@@ -11,7 +11,7 @@ class Confirmation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            comment: "Comment Added!",
+            comment: "",
             showSuccess: false,
             isShowPaymentModal: false,
             showSuccessModal: false
@@ -30,17 +30,11 @@ class Confirmation extends Component {
         const { isSuccess, isFailure, loading, packageRequestRes, packageRequestObj } = this.props.packageRequest;
         const { userProfile } = this.props.userRes;
         const { packageRequestAction } = this.props;
-        if (packageRequestObj.needs == []) {
-            var params = {
-                user_id: userProfile.result.user_id,
-                comment: this.state.comment
-            }
-        } else {
-            var params = {
-                user_id: userProfile.result.user_id,
-                needs: packageRequestObj.needs,
-                comment: this.state.comment
-            }
+
+        var params = {
+            user_id: userProfile.result.user_id,
+            needs: packageRequestObj.needs,
+            comment: this.state.comment
         }
         await packageRequestAction(params)
     }
@@ -82,9 +76,9 @@ class Confirmation extends Component {
                 command: "AUTHORIZATION",
                 access_code: "SDml7I01zNJCFuh66dAJ",//"DNedcyLMfAEH3ZbOTTzX",
                 merchant_identifier: "JLNmgBYq",//"492860a6",
-                merchant_reference: getBarCode.getBarcode? getBarCode.getBarcode.result.barcode : 'MRDRAPER123', 
+                merchant_reference: getBarCode.getBarcode ? getBarCode.getBarcode.result.barcode : 'MRDRAPER123',
                 sha_request_phrase: "TESTSHAOUT",//"2y$10$6FiAOMNlW",
-                amount: 1*100,
+                amount: 1 * 100,
                 currencyType: "AED",
                 language: "en",
                 email: userRes.userProfile.result.email,
@@ -174,7 +168,7 @@ class Confirmation extends Component {
                             placeholderText={`write something`}
                             placeholderTextColor={colors.lightGrey}
                             keyboardType={'default'}
-                            // onChangeText={(text) => this.setState({ password: text })}
+                            onChangeText={(text) => this.setState({ comment: text })}
                             containerStyle={{ height: WP('25'), width: WP('78'), alignSelf: 'center', marginHorizontal: WP('5'), marginTop: WP('10') }}
                             style={{ height: WP('18'), paddingHorizontal: WP(1) }}
                         />

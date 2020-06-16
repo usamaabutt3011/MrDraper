@@ -25,14 +25,7 @@ export const MyPackagesCard = props => {
                             style={styles.completeButton}
                         />
                         :
-                        props.item.package_status == 'Pickup requested' ?
-                            <Button
-                                disabled={true}
-                                title={props.item.package_status}
-                                titleStyle={{ fontSize: WP('3.7') }}
-                                style={styles.pickedButton}
-                            />
-                            :
+                        props.item.package_status == 'Package received' ?
                             <View style={styles.buttonsContainer}>
                                 <Button
                                     disabled={true}
@@ -47,6 +40,13 @@ export const MyPackagesCard = props => {
                                     style={styles.expiryButton}
                                 />
                             </View>
+                            :
+                            <Button
+                                disabled={true}
+                                title={props.item.package_status}
+                                titleStyle={{ fontSize: WP('3.7') }}
+                                style={styles.pickedButton}
+                            />
 
                 }
             </View>

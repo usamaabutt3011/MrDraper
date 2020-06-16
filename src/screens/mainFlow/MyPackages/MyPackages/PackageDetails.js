@@ -118,12 +118,13 @@ class PackageDetail extends Component {
         );
     }
     historyCard = (item, key) => {
+        console.log('=======histiry card: ', item.image);
         const { packageDetail } = this.props;
         return (
             <View key={key} style={{ marginBottom: WP('5') }}>
                 <View style={{ height: WP('20'), width: WP('80'), alignItems: 'center', flexDirection: 'row', alignSelf: 'center' }}>
                     <Image
-                        source={appImages.trendyStyleMe}
+                        source={{ uri: item.image }}
                         // source={{ uri: `http://stagingwebsite.mrdraper.com${item.image}` }}
                         style={{ height: WP('15'), width: WP('15'), marginHorizontal: WP('2') }}
                     />
